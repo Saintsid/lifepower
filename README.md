@@ -1,123 +1,240 @@
-# Сайт "Сила природы" - Оздоровительный центр
+# LifePower - Оздоровительный центр "Сила жизни"
 
-Статический сайт для оздоровительного центра в Таганроге.
+Веб-сайт оздоровительного центра в Таганроге с услугами нутрициологии, гирудотерапии, массажа и wellness-программ.
+
+## Технологии
+
+### Frontend
+- HTML5, CSS3, JavaScript
+- Раздается через системный Nginx (не в Docker)
+
+### Backend
+- FastAPI (Python 3.11)
+- PostgreSQL 15
+- SQLAlchemy ORM
+- Docker для изоляции
+
+### DevOps
+- Docker & Docker Compose (только для backend и БД)
+- Системный Nginx с SSL (Let's Encrypt)
+- GitHub Actions для автоматического деплоя
+
+## Архитектура
+
+```
+Сервер (lifepower.su)
+│
+├── Nginx (системный, порт 80/443)
+│   ├── SSL/TLS (Let's Encrypt)
+│   ├── Раздает статику: /opt/lifepower/frontend/static/
+│   └── Проксирует API: /api/ → http://127.0.0.1:8002/
+│
+└── Docker Compose
+    ├── FastAPI (127.0.0.1:8002)
+    └── PostgreSQL (внутренний)
+```
 
 ## Структура проекта
 
 ```
-sila-prirody/
-├── index.html          # Главная страница
-├── services.html       # Страница услуг
-├── about.html          # О центре
-├── contacts.html       # Контакты
-├── css/
-│   └── style.css       # Основные стили
-├── js/
-│   └── form.js         # Обработка контактной формы
-└── images/             # Директория для изображений (пустая)
+LifePower/
+├── frontend/
+│   └── static/           # Фронтенд (раздается системным nginx)
+│       ├── index.html    # Главная страница
+│       ├── services.html # Услуги
+│       ├── about.html    # О центре
+│       ├── contacts.html # Контакты
+│       ├── css/          # Стили
+│       ├── js/           # Скрипты
+│       └── {css,js,images}/ # Изображения
+├── backend/              # Backend API
+│   ├── app/
+│   │   └── main.py      # FastAPI приложение
+│   ├── Dockerfile       # Docker образ backend
+│   └── requirements.txt # Python зависимости
+├── .github/
+│   └── workflows/
+│       └── deploy.yml   # CI/CD pipeline
+└── docker-compose.yml   # Только FastAPI + PostgreSQL
 ```
 
-## Быстрый деплой на Nginx
+## Локальная разработка
 
-### 1. Копирование файлов на сервер
+### Предварительные требования
+- Docker и Docker Compose
+- Git
+
+### Запуск проекта
+
+1. Клонировать репозиторий:
+```bash
+git clone <repo-url>
+cd LifePower
+```
+
+2. Запустить контейнеры:
+```bash
+docker-compose up -d
+```
+
+3. Проверить статус:
+```bash
+docker-compose ps
+```
+
+Приложение будет доступно:
+- **Backend API**: http://localhost:8002/
+- **API Docs**: http://localhost:8002/docs
+- **Health Check**: http://localhost:8002/health
+
+**Примечание:** Локально фронтенд нужно открывать напрямую через файлы или настроить локальный веб-сервер.
+
+### Остановка
 
 ```bash
-scp -r sila-prirody/ user@your-server:/var/www/
+docker-compose down
 ```
 
-### 2. Настройка Nginx
+## Деплой
 
-Создайте конфигурацию:
+Деплой выполняется автоматически через GitHub Actions при пуше в ветки `main` или `master`.
+
+### Необходимые секреты в GitHub
+
+В настройках репозитория (Settings → Secrets and variables → Actions) добавить:
+
+1. `SSH_HOST` - IP-адрес или домен сервера (lifepower.su)
+2. `SSH_USERNAME` - имя пользователя SSH
+3. `SSH_PRIVATE_KEY` - приватный SSH ключ для доступа к серверу
+
+### Процесс деплоя
+
+1. GitHub Actions копирует файлы на сервер через rsync в `/opt/lifepower/`
+2. На сервере выполняется:
+   ```bash
+   cd /opt/lifepower
+   docker-compose down        # Остановка старых контейнеров
+   docker-compose build       # Сборка новых образов
+   docker-compose up -d       # Запуск в фоне
+   docker image prune -f      # Очистка старых образов
+   ```
+3. Nginx автоматически начинает раздавать обновленные файлы
+
+### Конфигурация Nginx на сервере
+
+Системный Nginx настроен так:
+- **Домен**: lifepower.su, www.lifepower.su
+- **SSL**: Автоматический редирект HTTP → HTTPS
+- **Статика**: `/opt/lifepower/frontend/static/`
+- **API**: `/api/*` проксируется на `http://127.0.0.1:8002/`
+
+## API Endpoints
+
+- `GET /` - Информация об API
+- `GET /health` - Проверка здоровья сервиса
+- `GET /docs` - Swagger UI документация
+- `GET /redoc` - ReDoc документация
+
+## Переменные окружения
+
+### PostgreSQL
+- `POSTGRES_USER`: lifepower
+- `POSTGRES_PASSWORD`: changeme (⚠️ изменить в продакшене!)
+- `POSTGRES_DB`: lifepower_db
+
+### Backend
+- `DATABASE_URL`: строка подключения к БД
+
+## Безопасность
+
+✅ **Реализовано:**
+- SSL/TLS сертификат (Let's Encrypt)
+- FastAPI доступен только на localhost (127.0.0.1:8002)
+- PostgreSQL изолирован внутри Docker сети
+
+⚠️ **Важно для продакшена:**
+1. Изменить пароль PostgreSQL в `docker-compose.yml`
+2. Настроить firewall (разрешить только 80, 443, SSH)
+3. Регулярные бэкапы базы данных
+
+## Мониторинг
+
+### Проверка логов
 
 ```bash
-nano /etc/nginx/sites-available/sila-prirody
+# Docker контейнеры
+docker-compose logs -f fastapi
+docker-compose logs -f postgres
+
+# Nginx
+sudo tail -f /var/log/nginx/lifepower_access.log
+sudo tail -f /var/log/nginx/lifepower_error.log
 ```
 
-Добавьте:
-
-```nginx
-server {
-    listen 80;
-    server_name your-domain.ru www.your-domain.ru;
-    
-    root /var/www/sila-prirody;
-    index index.html;
-    
-    location / {
-        try_files $uri $uri/ =404;
-    }
-    
-    # Кеширование статики
-    location ~* \.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2)$ {
-        expires 30d;
-        add_header Cache-Control "public, immutable";
-    }
-    
-    # Gzip сжатие
-    gzip on;
-    gzip_types text/css application/javascript text/html;
-}
-```
-
-Активируйте конфигурацию:
+### Проверка статуса
 
 ```bash
-ln -s /etc/nginx/sites-available/sila-prirody /etc/nginx/sites-enabled/
-nginx -t
-systemctl reload nginx
+# Контейнеры
+docker-compose ps
+
+# Nginx
+sudo systemctl status nginx
+
+# Проверка API
+curl http://127.0.0.1:8002/health
+curl https://lifepower.su/api/health
 ```
 
-### 3. Установка SSL (Let's Encrypt)
+## Обслуживание
+
+### Обновление SSL сертификата
+
+Certbot настроен на автоматическое обновление. Проверка:
+```bash
+sudo certbot renew --dry-run
+```
+
+### Бэкап базы данных
 
 ```bash
-certbot --nginx -d your-domain.ru -d www.your-domain.ru
+cd /opt/lifepower
+docker-compose exec postgres pg_dump -U lifepower lifepower_db > backup_$(date +%Y%m%d).sql
 ```
 
-## Альтернатива: Docker
-
-Создайте `Dockerfile`:
-
-```dockerfile
-FROM nginx:alpine
-COPY . /usr/share/nginx/html
-EXPOSE 80
-```
-
-Запустите:
+### Восстановление
 
 ```bash
-docker build -t sila-prirody .
-docker run -d -p 80:80 sila-prirody
+docker-compose exec -T postgres psql -U lifepower lifepower_db < backup_20250101.sql
 ```
 
-## Что нужно доделать
+## Устранение неполадок
 
-1. **Контактная форма**: Сейчас форма только показывает alert. Нужно:
-   - Настроить бэкенд для приёма заявок (PHP/Python/Node.js)
-   - Или интегрировать с сервисами (Formspree, EmailJS)
+### API не отвечает
+```bash
+# Проверить контейнеры
+docker-compose ps
+docker-compose logs fastapi
 
-2. **Изображения**: Добавить фотографии в папку `images/`
+# Перезапустить
+docker-compose restart fastapi
+```
 
-3. **Карта**: Добавить Яндекс.Карты на страницу контактов
+### 502 Bad Gateway
+- Проверить, запущен ли контейнер FastAPI
+- Проверить порт 8002: `netstat -tulpn | grep 8002`
+- Проверить конфиг nginx
 
-4. **SEO**: 
-   - Создать robots.txt
-   - Добавить sitemap.xml
-   - Настроить Google Analytics / Яндекс.Метрику
+### База данных недоступна
+```bash
+docker-compose logs postgres
+docker-compose restart postgres
+```
 
-5. **Телефон и email**: Заменить на реальные контакты в `contacts.html`
+## Контакты
 
-## Технические характеристики
+- **Сайт**: https://lifepower.su
+- **Адрес**: Ростовская область, Таганрог, Смирновский переулок, 10
 
-- Чистый HTML5/CSS3/JS
-- Адаптивный дизайн (mobile-first)
-- Размер: ~30 KB (без изображений)
-- Время загрузки: <1 сек
-- SEO-оптимизирован
+---
 
-## Поддержка браузеров
-
-- Chrome/Edge: последние 2 версии
-- Firefox: последние 2 версии
-- Safari: последние 2 версии
-- Mobile: iOS 12+, Android 8+
+© 2025 Сила жизни. Все права защищены.

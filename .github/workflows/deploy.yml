@@ -1,0 +1,35 @@
+name: Deploy LifePower
+
+on:
+  push:
+    branches: [ "master", "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        
+      - name: Copy files to server
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete --no-times --no-perms --exclude=logs/ --exclude=.git/ --exclude=.github/
+          path: ./
+          remote_path: /opt/lifepower
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USERNAME }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          
+      - name: Deploy container
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/lifepower
+            docker-compose down
+            docker-compose build
+            docker-compose up -d
+            docker image prune -f

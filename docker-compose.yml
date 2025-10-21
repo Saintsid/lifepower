@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  fastapi:
+    build: ./backend
+    container_name: lifepower_api
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8002:8000"
+    environment:
+      DATABASE_URL: postgresql://lifepower:changeme@postgres:5432/lifepower_db
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend/app:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: lifepower_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lifepower
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: lifepower_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
