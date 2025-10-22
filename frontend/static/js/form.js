@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('form.js loaded'); // Для отладки
 
     // Обработчик формы контакта/записи
     const form = document.getElementById('contactForm');
@@ -34,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const phoneInputs = document.querySelectorAll('input[type="tel"], #phone');
 
     phoneInputs.forEach(function(phoneInput) {
-        console.log('Phone input found:', phoneInput); // Для отладки
 
         // Устанавливаем placeholder
         if (!phoneInput.placeholder || phoneInput.placeholder === '') {

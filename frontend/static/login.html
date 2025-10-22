@@ -49,7 +49,7 @@
             <div id="errorMessage" class="error-message"></div>
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="email">Email *</label>
+                    <label for="email">Электронная почта *</label>
                     <input type="email" id="email" required>
                 </div>
                 <div class="form-group">
@@ -99,6 +99,25 @@
                 errorDiv.style.display = 'block';
             }
         });
+
+        // Кастомные сообщения валидации
+        document.getElementById('email').oninvalid = function(e) {
+            if (e.target.validity.valueMissing) {
+                e.target.setCustomValidity('Пожалуйста, введите email адрес');
+            } else if (e.target.validity.typeMismatch) {
+                e.target.setCustomValidity('Пожалуйста, введите корректный email адрес');
+            }
+        };
+        document.getElementById('email').oninput = function(e) {
+            e.target.setCustomValidity('');
+        };
+
+        document.getElementById('password').oninvalid = function(e) {
+            e.target.setCustomValidity('Пожалуйста, введите пароль');
+        };
+        document.getElementById('password').oninput = function(e) {
+            e.target.setCustomValidity('');
+        };
     </script>
 </body>
 </html>

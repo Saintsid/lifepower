@@ -66,7 +66,7 @@
                     <input type="tel" id="phone" required placeholder="+7 (___) ___-__-__">
                 </div>
                 <div class="form-group">
-                    <label for="email">Email *</label>
+                    <label for="email">Электронная почта *</label>
                     <input type="email" id="email" required>
                 </div>
                 <div class="form-group">
@@ -124,6 +124,50 @@
                 errorDiv.style.display = 'block';
             }
         });
+
+        // Кастомные сообщения валидации
+        document.getElementById('name').oninvalid = function(e) {
+            e.target.setCustomValidity('Пожалуйста, введите ваше имя');
+        };
+        document.getElementById('name').oninput = function(e) {
+            e.target.setCustomValidity('');
+        };
+
+        document.getElementById('phone').oninvalid = function(e) {
+            e.target.setCustomValidity('Пожалуйста, введите номер телефона');
+        };
+        document.getElementById('phone').oninput = function(e) {
+            e.target.setCustomValidity('');
+        };
+
+        document.getElementById('email').oninvalid = function(e) {
+            if (e.target.validity.valueMissing) {
+                e.target.setCustomValidity('Пожалуйста, введите email адрес');
+            } else if (e.target.validity.typeMismatch) {
+                e.target.setCustomValidity('Пожалуйста, введите корректный email адрес');
+            }
+        };
+        document.getElementById('email').oninput = function(e) {
+            e.target.setCustomValidity('');
+        };
+
+        document.getElementById('password').oninvalid = function(e) {
+            if (e.target.validity.valueMissing) {
+                e.target.setCustomValidity('Пожалуйста, введите пароль');
+            } else if (e.target.validity.tooShort) {
+                e.target.setCustomValidity('Пароль должен содержать минимум 6 символов');
+            }
+        };
+        document.getElementById('password').oninput = function(e) {
+            e.target.setCustomValidity('');
+        };
+
+        document.getElementById('agreePrivacy').oninvalid = function(e) {
+            e.target.setCustomValidity('Пожалуйста, согласитесь с политикой конфиденциальности');
+        };
+        document.getElementById('agreePrivacy').onchange = function(e) {
+            e.target.setCustomValidity('');
+        };
     </script>
     <script src="js/form.js"></script>
 </body>
