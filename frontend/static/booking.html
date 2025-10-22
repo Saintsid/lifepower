@@ -87,6 +87,13 @@
                             <textarea id="message" name="message" placeholder="Расскажите о своих пожеланиях или вопросах"></textarea>
                         </div>
 
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="agreePrivacy" required>
+                                Я согласен с <a href="privacy.html" target="_blank">политикой конфиденциальности</a> и даю согласие на обработку персональных данных *
+                            </label>
+                        </div>
+
                         <button type="submit" class="btn">Отправить заявку</button>
                     </form>
                 </div>
@@ -101,7 +108,53 @@
         </div>
     </footer>
 
+    <script src="js/auth.js"></script>
     <script src="js/form.js"></script>
+    <script>
+        // Автозаполнение для залогиненных пользователей
+        async function prefillForm() {
+            const user = await getCurrentUser();
+            if (user) {
+                document.getElementById('name').value = user.name;
+                document.getElementById('phone').value = user.phone;
+                document.getElementById('email').value = user.email;
+            }
+        }
+        prefillForm();
+
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!document.getElementById('agreePrivacy').checked) {
+                alert('Необходимо согласиться с политикой конфиденциальности');
+                return;
+            }
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                service: document.getElementById('service').value,
+                message: document.getElementById('message').value
+            };
+            
+            try {
+                const response = await apiRequest('/bookings', {
+                    method: 'POST',
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    alert('Спасибо за Вашу заявку! Мы свяжемся с Вами в ближайшее время.');
+                    this.reset();
+                } else {
+                    alert('Ошибка при отправке заявки. Пожалуйста, попробуйте позже.');
+                }
+            } catch (error) {
+                alert('Ошибка подключения к серверу');
+            }
+        });
+    </script>
 </body>
 </html>
 
