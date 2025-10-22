@@ -30,10 +30,13 @@ async function apiRequest(endpoint, options = {}) {
         headers
     });
     
+    // Не делаем редирект на login, если уже на странице входа
     if (response.status === 401) {
-        removeToken();
-        window.location.href = '/login.html';
-        return;
+        const currentPath = window.location.pathname;
+        if (currentPath !== '/login.html' && currentPath !== '/register.html') {
+            removeToken();
+            window.location.href = '/login.html';
+        }
     }
     
     return response;
