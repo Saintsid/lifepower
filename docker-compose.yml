@@ -11,8 +11,6 @@ services:
       DATABASE_URL: postgresql://lifepower:changeme@postgres:5432/lifepower_db
     depends_on:
       - postgres
-    volumes:
-      - ./backend/app:/app
     command: uvicorn main:app --host 0.0.0.0 --port 8000
 
   postgres:
