@@ -8,8 +8,8 @@ services:
     ports:
       - "127.0.0.1:8002:8000"
     environment:
-      DATABASE_URL: postgresql://lifepower:changeme@postgres:5432/lifepower_db
-      SECRET_KEY: "замените-на-случайную-строку-в-продакшене"
+      DATABASE_URL: postgresql://lifepower:123456@postgres:5432/lifepower_db
+      SECRET_KEY: "xK9m2nP4qR8sT1vW5yZ7aB3cD6eF0gH9iJ2kL4mN7oP"
     depends_on:
       - postgres
     command: uvicorn main:app --host 0.0.0.0 --port 8000
@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: lifepower
-      POSTGRES_PASSWORD: changeme
+      POSTGRES_PASSWORD: 123456
       POSTGRES_DB: lifepower_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
