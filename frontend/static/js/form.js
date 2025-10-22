@@ -29,28 +29,70 @@ document.addEventListener('DOMContentLoaded', function() {
         // Маска для телефона
         const phoneInput = document.getElementById('phone');
         if (phoneInput) {
+            // Устанавливаем placeholder
+            phoneInput.placeholder = '+7 (___) ___-__-__';
+
+            phoneInput.addEventListener('focus', function(e) {
+                // При фокусе, если поле пустое, ставим +7
+                if (!e.target.value) {
+                    e.target.value = '+7 ';
+                }
+            });
+
             phoneInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 0) {
-                    if (value[0] === '8') value = '7' + value.slice(1);
-                    if (value[0] !== '7') value = '7' + value;
+                let value = e.target.value;
+
+                // Сохраняем позицию курсора
+                let cursorPosition = e.target.selectionStart;
+
+                // Удаляем все, кроме цифр
+                let numbers = value.replace(/\D/g, '');
+
+                // Если первая цифра 8, заменяем на 7
+                if (numbers.startsWith('8')) {
+                    numbers = '7' + numbers.slice(1);
                 }
-                
-                let formattedValue = '+7';
-                if (value.length > 1) {
-                    formattedValue += ' (' + value.substring(1, 4);
+
+                // Если не начинается с 7, добавляем
+                if (!numbers.startsWith('7')) {
+                    numbers = '7' + numbers;
                 }
-                if (value.length >= 5) {
-                    formattedValue += ') ' + value.substring(4, 7);
+
+                // Обрезаем до 11 цифр (7 + 10 цифр номера)
+                numbers = numbers.slice(0, 11);
+
+                // Форматируем
+                let formatted = '+7';
+
+                if (numbers.length > 1) {
+                    formatted += ' (' + numbers.slice(1, 4);
                 }
-                if (value.length >= 8) {
-                    formattedValue += '-' + value.substring(7, 9);
+                if (numbers.length >= 5) {
+                    formatted += ') ' + numbers.slice(4, 7);
                 }
-                if (value.length >= 10) {
-                    formattedValue += '-' + value.substring(9, 11);
+                if (numbers.length >= 8) {
+                    formatted += '-' + numbers.slice(7, 9);
                 }
-                
-                e.target.value = formattedValue;
+                if (numbers.length >= 10) {
+                    formatted += '-' + numbers.slice(9, 11);
+                }
+
+                // Устанавливаем отформатированное значение
+                e.target.value = formatted;
+
+                // Корректируем позицию курсора (упрощённо - ставим в конец)
+                // Для более точной позиции нужна сложная логика
+                if (cursorPosition < formatted.length) {
+                    e.target.setSelectionRange(formatted.length, formatted.length);
+                }
+            });
+
+            phoneInput.addEventListener('keydown', function(e) {
+                // Запрещаем удаление префикса +7
+                if ((e.key === 'Backspace' || e.key === 'Delete') &&
+                    e.target.selectionStart <= 3) {
+                    e.preventDefault();
+                }
             });
         }
     }
