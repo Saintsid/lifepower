@@ -69,7 +69,7 @@ nav a.active {
 .hero {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: var(--white);
-    padding: 4rem 0;
+    padding: 2.5rem 0;
     position: relative;
     overflow: hidden;
 }
@@ -79,7 +79,7 @@ nav a.active {
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: center;
-    min-height: 400px;
+    min-height: 350px;
 }
 
 .hero-text {
@@ -125,7 +125,24 @@ nav a.active {
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     object-fit: cover;
-    max-height: 500px;
+    max-height: 400px;
+}
+
+/* Простой hero для внутренних страниц */
+.hero-simple {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--white);
+    padding: 2.5rem 0;
+    text-align: center;
+}
+
+.hero-simple h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero-simple p {
+    font-size: 1.2rem;
 }
 
 main {
@@ -307,6 +324,14 @@ section h2 {
         display: block;
         text-align: center;
         width: 100%;
+    }
+    
+    .hero-simple h2 {
+        font-size: 1.8rem;
+    }
+    
+    .hero-simple p {
+        font-size: 1rem;
     }
     
     .services-grid {
