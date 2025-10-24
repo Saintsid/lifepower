@@ -358,11 +358,12 @@ section h2 {
         position: sticky;
         top: 0;
         z-index: 1000;
-        padding: 0.5rem 0;
+        padding: 0.5rem 1rem;
+        margin: 0 -1rem; /* компенсация padding контейнера */
         background: var(--primary-color);
         justify-content: center;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* тень для отделения */
-        width: 100%; /* на всю ширину */
+        width: calc(100% + 2rem); /* на всю ширину с учётом margin */
     }
     
     .logo-link {
