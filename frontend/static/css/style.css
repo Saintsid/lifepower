@@ -341,9 +341,9 @@ section h2 {
 }
 
 @media (max-width: 768px) {
-    /* ВАЖНО: убираем sticky с header */
+    /* Header - обычный, не закреплён */
     header {
-        position: relative; /* НЕ sticky! */
+        position: relative;
         padding: 0;
     }
     
@@ -353,17 +353,18 @@ section h2 {
         align-items: stretch;
     }
     
-    /* Только логотип sticky */
+    /* Логотип - ЗАКРЕПЛЁН вверху (fixed) */
     .logo {
-        position: sticky;
+        position: fixed;
         top: 0;
+        left: 0;
+        right: 0;
         z-index: 1000;
         padding: 0.5rem 1rem;
-        margin: 0 -1rem; /* компенсация padding контейнера */
         background: var(--primary-color);
         justify-content: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* тень для отделения */
-        width: calc(100% + 2rem); /* на всю ширину с учётом margin */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        width: 100%;
     }
     
     .logo-link {
@@ -379,11 +380,12 @@ section h2 {
         font-size: 1.2rem;
     }
     
-    /* Навигация - НЕ sticky, скроллится */
+    /* Навигация - НЕ закреплена, уезжает при скролле */
     nav {
         position: static;
         background: var(--primary-color);
         padding: 0.8rem 0;
+        margin-top: 48px; /* отступ под fixed логотип */
     }
     
     nav ul {
