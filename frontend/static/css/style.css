@@ -341,24 +341,27 @@ section h2 {
 }
 
 @media (max-width: 768px) {
-    /* Компактный sticky header только с логотипом */
+    /* ВАЖНО: убираем sticky с header */
     header {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        padding: 0.5rem 0; /* уменьшаем padding */
+        position: relative; /* НЕ sticky! */
+        padding: 0;
     }
     
     .header-content {
         flex-direction: column;
-        gap: 0; /* убираем gap между logo и nav */
+        gap: 0;
         align-items: stretch;
     }
     
+    /* Только логотип sticky */
     .logo {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
         padding: 0.5rem 0;
         background: var(--primary-color);
         justify-content: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* тень для отделения */
     }
     
     .logo-link {
@@ -371,10 +374,10 @@ section h2 {
     }
     
     .logo h1 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
     
-    /* Навигация под логотипом - static */
+    /* Навигация - НЕ sticky, скроллится */
     nav {
         position: static;
         background: var(--primary-color);
@@ -388,7 +391,7 @@ section h2 {
     }
     
     nav a {
-        font-size: 0.95rem; /* чуть меньше шрифт */
+        font-size: 0.95rem;
         padding: 0.3rem 0;
         display: block;
     }
