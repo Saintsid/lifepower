@@ -362,6 +362,7 @@ section h2 {
         background: var(--primary-color);
         justify-content: center;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* тень для отделения */
+        width: 100%; /* на всю ширину */
     }
     
     .logo-link {
