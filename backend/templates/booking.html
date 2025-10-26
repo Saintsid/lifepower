@@ -103,6 +103,11 @@ document.getElementById('contactForm').addEventListener('submit', async function
         });
 
         if (response.ok) {
+            // Отправляем цель в Яндекс.Метрику
+            if (typeof ym !== 'undefined') {
+                ym(104857779, 'reachGoal', 'booking_submit');
+            }
+            
             alert('Спасибо за Вашу заявку! Мы свяжемся с Вами в ближайшее время.');
             this.reset();
             

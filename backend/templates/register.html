@@ -63,6 +63,11 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
         });
 
         if (response.ok) {
+            // Отправляем цель в Яндекс.Метрику
+            if (typeof ym !== 'undefined') {
+                ym(104857779, 'reachGoal', 'registration_success');
+            }
+            
             successDiv.textContent = 'Регистрация успешна! Переход на страницу входа...';
             successDiv.style.display = 'block';
             setTimeout(() => {
