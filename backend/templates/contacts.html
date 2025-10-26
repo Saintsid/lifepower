@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Контакты | Сила жизни | Таганрог{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-image-block">
+                <img src="/static/images/lifepower.jpeg" alt="Центр Сила жизни" class="hero-image">
+            </div>
+            <div class="hero-text">
+                <h2>Свяжитесь с нами</h2>
+                <p>Запишитесь на консультацию прямо сейчас</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <section>
+        <div style="margin-top: 1rem;">
+            <h2>Контактная информация</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                <div class="contact-info">
+                    <h3>📍 Адрес</h3>
+                    <p>Ростовская область, г. Таганрог<br>
+                    Смирновский переулок, 10</p>
+                </div>
+
+                <div class="contact-info">
+                    <h3>📞 Телефон</h3>
+                    <p><a href="tel:+79281905001">+7 (928) 190-50-01</a></p>
+                    <p style="font-size: 0.9rem; color: var(--text-light);">Звоните ежедневно с 9:00 до 20:00</p>
+                </div>
+
+                <div class="contact-info">
+                    <h3>✉️ Email</h3>
+                    <p><a href="mailto:info@sila-zhizni.ru">info@sila-zhizni.ru</a></p>
+                    <p style="font-size: 0.9rem; color: var(--text-light);">Ответим в течение 24 часов</p>
+                </div>
+            </div>
+
+            <div class="contact-info" style="margin-top: 2rem;">
+                <h3>🕐 Режим работы</h3>
+                <p><strong>Понедельник - Пятница:</strong> 9:00 - 20:00</p>
+                <p><strong>Суббота:</strong> 10:00 - 18:00</p>
+                <p><strong>Воскресенье:</strong> Выходной</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/booking" class="btn">Записаться на консультацию</a>
+            </div>
+        </div>
+
+        <div class="about-section" style="margin-top: 3rem;">
+            <h3>Как до нас добраться</h3>
+            <p>Центр "Сила жизни" находится в центральной части Таганрога, на Смирновском переулке. Рядом есть парковка для автомобилей. Общественным транспортом: остановка "Центральный рынок" (автобусы №№ 1, 5, 7, маршрутки).</p>
+
+            <!-- Здесь можно добавить карту -->
+            <div style="margin-top: 1.5rem; padding: 2rem; background: #e9ecef; border-radius: 8px; text-align: center;">
+                <p style="color: var(--text-light);">[ Здесь будет интерактивная карта ]</p>
+                <p style="margin-top: 0.5rem;">
+                    <a href="https://yandex.ru/maps/" target="_blank" style="color: var(--primary-color);">Открыть в Яндекс.Картах</a>
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

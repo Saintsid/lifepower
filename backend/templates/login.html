@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Вход | Сила жизни{% endblock %}
+
+{% block content %}
+<main>
+    <div class="auth-container">
+        <h2>Вход в личный кабинет</h2>
+        <div id="errorMessage" class="error-message"></div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Электронная почта *</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль *</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="btn" style="width: 100%;">Войти</button>
+        </form>
+        <p style="text-align: center; margin-top: 1rem;">
+            Нет аккаунта? <a href="/register">Зарегистрироваться</a>
+        </p>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/auth.js"></script>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errorDiv = document.getElementById('errorMessage');
+    errorDiv.style.display = 'none';
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        const response = await apiRequest('/login', {
+            method: 'POST',
+            body: JSON.stringify({ email, password })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            saveToken(data.access_token);
+
+            if (data.user.role === 'admin') {
+                window.location.href = '/admin-dashboard';
+            } else {
+                window.location.href = '/client-dashboard';
+            }
+        } else {
+            const error = await response.json();
+            errorDiv.textContent = error.detail || 'Неверный email или пароль';
+            errorDiv.style.display = 'block';
+        }
+    } catch (error) {
+        errorDiv.textContent = 'Ошибка подключения к серверу';
+        errorDiv.style.display = 'block';
+    }
+});
+
+// Кастомные сообщения валидации
+document.getElementById('email').oninvalid = function(e) {
+    if (e.target.validity.valueMissing) {
+        e.target.setCustomValidity('Пожалуйста, введите email адрес');
+    } else if (e.target.validity.typeMismatch) {
+        e.target.setCustomValidity('Пожалуйста, введите корректный email адрес');
+    }
+};
+document.getElementById('email').oninput = function(e) {
+    e.target.setCustomValidity('');
+};
+
+document.getElementById('password').oninvalid = function(e) {
+    e.target.setCustomValidity('Пожалуйста, введите пароль');
+};
+document.getElementById('password').oninput = function(e) {
+    e.target.setCustomValidity('');
+};
+</script>
+<style>
+.auth-container {
+    max-width: 400px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.auth-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.error-message {
+    background: #fee;
+    color: #c33;
+    padding: 0.8rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    display: none;
+}
+</style>
+{% endblock %}

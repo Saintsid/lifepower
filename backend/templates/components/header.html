@@ -1,0 +1,21 @@
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <a href="/" class="logo-link">
+                    <img src="/static/images/lifepower_simbol.jpeg" alt="Логотип" class="logo-icon">
+                    <h1>Сила жизни</h1>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/" class="{% if active_page == 'index' %}active{% endif %}">Главная</a></li>
+                    <li><a href="/services" class="{% if active_page == 'services' %}active{% endif %}">Услуги</a></li>
+                    <li><a href="/about" class="{% if active_page == 'about' %}active{% endif %}">О центре</a></li>
+                    <li><a href="/contacts" class="{% if active_page == 'contacts' %}active{% endif %}">Контакты</a></li>
+                    <li><a href="/login" class="{% if active_page == 'login' %}active{% endif %}">Личный кабинет</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
