@@ -103,8 +103,14 @@ document.getElementById('contactForm').addEventListener('submit', async function
         message: document.getElementById('message').value
     };
 
+    // Показываем индикатор загрузки
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправка...';
+
     try {
-        const response = await apiRequest('/bookings', {
+        const response = await apiRequest('/api/bookings', {
             method: 'POST',
             body: JSON.stringify(formData)
         });
@@ -112,11 +118,22 @@ document.getElementById('contactForm').addEventListener('submit', async function
         if (response.ok) {
             alert('Спасибо за Вашу заявку! Мы свяжемся с Вами в ближайшее время.');
             this.reset();
+            
+            // Если пользователь авторизован, предлагаем перейти в ЛК
+            const user = await getCurrentUser();
+            if (user && confirm('Хотите посмотреть Ваши записи в личном кабинете?')) {
+                window.location.href = '/client-dashboard';
+            }
         } else {
-            alert('Ошибка при отправке заявки. Пожалуйста, попробуйте позже.');
+            const error = await response.json().catch(() => ({}));
+            alert(error.detail || 'Ошибка при отправке заявки. Пожалуйста, попробуйте позже или позвоните нам.');
         }
     } catch (error) {
-        alert('Ошибка подключения к серверу');
+        console.error('Ошибка:', error);
+        alert('Ошибка подключения к серверу. Пожалуйста, проверьте интернет-соединение.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
     }
 });
 

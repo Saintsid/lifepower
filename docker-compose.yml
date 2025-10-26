@@ -10,6 +10,8 @@ services:
     environment:
       DATABASE_URL: postgresql://lifepower:123456@postgres:5432/lifepower_db
       SECRET_KEY: "xK9m2nP4qR8sT1vW5yZ7aB3cD6eF0gH9iJ2kL4mN7oP"
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
     depends_on:
       - postgres
     volumes:

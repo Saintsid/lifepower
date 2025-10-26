@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import User, UserRole
 import os
+from typing import Optional
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
@@ -43,6 +44,29 @@ def get_current_user(
     user = db.query(User).filter(User.email == email).first()
     if user is None:
         raise HTTPException(status_code=401, detail="User not found")
+    return user
+
+def get_current_user_optional(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(HTTPBearer(auto_error=False)),
+    db: Session = Depends(get_db)
+) -> Optional[User]:
+    """
+    Возвращает пользователя если токен валидный, иначе None
+    Не выбрасывает ошибку при отсутствии токена
+    """
+    if not credentials:
+        return None
+    
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        if email is None:
+            return None
+    except JWTError:
+        return None
+    
+    user = db.query(User).filter(User.email == email).first()
     return user
 
 def require_admin(current_user: User = Depends(get_current_user)):

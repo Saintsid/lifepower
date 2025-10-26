@@ -5,7 +5,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi import Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
+from datetime import datetime
 from database import engine, get_db, Base
 from models import User, Booking, UserRole, BookingStatus
 from schemas import (
@@ -14,8 +15,9 @@ from schemas import (
 )
 from auth import (
     get_password_hash, verify_password, create_access_token,
-    get_current_user, require_admin
+    get_current_user, require_admin, get_current_user_optional
 )
+from telegram import notify_new_booking
 
 Base.metadata.create_all(bind=engine)
 
@@ -136,14 +138,18 @@ def login(credentials: UserLogin, db: Session = Depends(get_db)):
 def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
-@app.post("/bookings", response_model=BookingResponse)
-def create_booking(
+@app.post("/api/bookings", response_model=BookingResponse)
+async def create_booking(
     booking_data: BookingCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: Optional[User] = Depends(get_current_user_optional)
 ):
+    """
+    Создание заявки на консультацию
+    Работает как с авторизацией, так и без неё
+    """
     booking = Booking(
-        user_id=current_user.id,
+        user_id=current_user.id if current_user else None,
         name=booking_data.name,
         phone=booking_data.phone,
         email=booking_data.email,
@@ -153,6 +159,20 @@ def create_booking(
     db.add(booking)
     db.commit()
     db.refresh(booking)
+    
+    # Отправляем уведомление в Telegram
+    await notify_new_booking(
+        booking_data={
+            "name": booking.name,
+            "phone": booking.phone,
+            "email": booking.email or "Не указан",
+            "service": booking.service or "Не указана",
+            "message": booking.message or "Нет сообщения",
+            "created_at": booking.created_at.strftime("%d.%m.%Y %H:%M")
+        },
+        user_name=current_user.name if current_user else None
+    )
+    
     return booking
 
 @app.get("/bookings", response_model=List[BookingResponse])
