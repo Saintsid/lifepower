@@ -110,7 +110,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
     submitBtn.textContent = 'Отправка...';
 
     try {
-        const response = await apiRequest('/api/bookings', {
+        const response = await apiRequest('/bookings', {
             method: 'POST',
             body: JSON.stringify(formData)
         });
