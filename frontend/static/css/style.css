@@ -472,3 +472,8 @@ section h2 {
     max-height: 400px;
     object-fit: cover;
 }
+
+/* Отступ для первой секции на главной странице */
+.first-section {
+    padding-top: 3rem;
+}
