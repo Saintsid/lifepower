@@ -2,19 +2,19 @@ version: '3.8'
 
 services:
   fastapi:
-      build:
-        context: .
-        dockerfile: backend/Dockerfile
-      container_name: lifepower_api
-      restart: unless-stopped
-      ports:
-        - "127.0.0.1:8002:8000"
-      environment:
-        DATABASE_URL: postgresql://lifepower:123456@postgres:5432/lifepower_db
-        SECRET_KEY: "xK9m2nP4qR8sT1vW5yZ7aB3cD6eF0gH9iJ2kL4mN7oP"
-      depends_on:
-        - postgres
-      command: uvicorn main:app --host 0.0.0.0 --port 8000
+    build: ./backend
+    container_name: lifepower_api
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8002:8000"
+    environment:
+      DATABASE_URL: postgresql://lifepower:123456@postgres:5432/lifepower_db
+      SECRET_KEY: "xK9m2nP4qR8sT1vW5yZ7aB3cD6eF0gH9iJ2kL4mN7oP"
+    depends_on:
+      - postgres
+    volumes:
+      - ./frontend/static:/app/static
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
 
   postgres:
     image: postgres:15-alpine
