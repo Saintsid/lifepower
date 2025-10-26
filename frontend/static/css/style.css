@@ -341,113 +341,119 @@ section h2 {
 }
 
 @media (max-width: 768px) {
-    /* Header - обычный, не закреплён */
+    /* Header - закреплён вверху */
     header {
-        position: relative;
-        padding: 0;
-    }
-    
-    .header-content {
-        flex-direction: column;
-        gap: 0;
-        align-items: stretch;
-    }
-    
-    /* Логотип - ЗАКРЕПЛЁН вверху (fixed) */
-    .logo {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         z-index: 1000;
-        padding: 0.5rem 1rem;
-        background: var(--primary-color);
-        justify-content: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        padding: 0.5rem 0;
         width: 100%;
     }
-    
-    .logo-link {
+
+    .header-content {
+        flex-direction: column;
         gap: 0.5rem;
+        align-items: center;
     }
-    
+
+    /* Логотип - компактный */
+    .logo {
+        padding: 0;
+        justify-content: center;
+    }
+
+    .logo-link {
+        gap: 0.4rem;
+    }
+
     .logo-icon {
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
     }
-    
+
     .logo h1 {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
-    
-    /* Навигация - НЕ закреплена, уезжает при скролле */
+
+    /* Навигация - горизонтально в одну строку */
     nav {
         position: static;
-        background: var(--primary-color);
-        padding: 0.8rem 0;
-        margin-top: 48px; /* отступ под fixed логотип */
+        background: transparent;
+        padding: 0;
+        margin-top: 0;
+        width: 100%;
     }
-    
+
     nav ul {
-        flex-direction: column;
-        gap: 0.8rem;
+        flex-direction: row;
+        gap: 0.3rem;
+        justify-content: center;
+        flex-wrap: nowrap;
         text-align: center;
     }
-    
+
+    nav li {
+        flex: 0 1 auto;
+    }
+
     nav a {
-        font-size: 0.95rem;
-        padding: 0.3rem 0;
-        display: block;
-    }
-    
-    nav a.booking-btn {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.4rem;
         display: inline-block;
-        margin-top: 0.3rem;
+        white-space: nowrap;
     }
-    
+
+    /* Отступ для контента под фиксированный хедер */
+    main {
+        padding-top: 5rem;
+    }
+
     .hero {
         padding: 1.2rem 0;
     }
-    
+
+    /* Остальные стили без изменений */
     .hero-content {
         grid-template-columns: 1fr;
         gap: 1rem;
         min-height: auto;
     }
-    
+
     .hero-text h2 {
         font-size: 1.6rem;
         margin-bottom: 0.8rem;
     }
-    
+
     .hero-text p {
         font-size: 0.95rem;
         margin-bottom: 1.2rem;
     }
-    
+
     .hero-image {
         max-height: 180px;
     }
-    
+
     .hero-btn {
         display: block;
         text-align: center;
         width: 100%;
         padding: 0.8rem 1.5rem;
     }
-    
+
     .hero-simple h2 {
         font-size: 1.8rem;
     }
-    
+
     .hero-simple p {
         font-size: 1rem;
     }
-    
+
     .services-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .about-main-image {
         max-height: 250px;
     }
