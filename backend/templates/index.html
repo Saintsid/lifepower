@@ -69,7 +69,14 @@
 
     </section>
 
-
+<!-- Карточка-тизер акции -->
+<section class="promo-teaser">
+    <div class="promo-card-mini">
+        <h3>🎁 Специальное предложение!</h3>
+        <h2>МАССАЖ В ПОДАРОК!</h2>
+        <button class="btn promo-btn" onclick="openPromoModal()">Узнать подробности →</button>
+    </div>
+</section>
 
     <section style="margin-top: 3rem;">
 
@@ -113,6 +120,118 @@
 
     </section>
 
+<!-- Модальное окно -->
+<div id="promoModal" class="modal">
+    <div class="modal-overlay" onclick="closePromoModal()"></div>
+    <div class="modal-content">
+        <span class="modal-close" onclick="closePromoModal()">&times;</span>
+
+        <h3>🎁 Специальное предложение!</h3>
+
+        <div class="modal-highlight">
+
+            <p>Станьте участником <strong>МАСТЕР-КЛАССА</strong> на тему здоровья и получите</p>
+
+        </div>
+
+        <h2>МАССАЖ В ПОДАРОК!</h2>
+
+        <p style="font-size: 1.1rem; margin: 0.5rem 0;">(40 минут)</p>
+
+        <div class="modal-details">
+
+            <p class="modal-price">Стоимость: <span class="old-price">1500₽</span> → <strong class="free-price">0₽</strong></p>
+
+        </div>
+
+        <div class="modal-contacts">
+
+            <a href="/booking" class="btn modal-booking-btn" onclick="closePromoModal(); if(typeof ym !== 'undefined') ym(104857779, 'reachGoal', 'promo_booking_click')">
+
+                Записаться на мастер-класс
+
+            </a>
+
+            <p class="modal-address">📍 Адрес: пер. Смирновский, 10</p>
+
+        </div>
+
+        <p class="modal-note">* Количество мест ограничено. Подробности по телефону.</p>
+    </div>
 </div>
+
+</div>
+
+{% block scripts %}
+
+<script>
+
+function openPromoModal() {
+
+    document.getElementById('promoModal').style.display = 'flex';
+
+    document.body.style.overflow = 'hidden';
+
+    // Яндекс.Метрика
+
+    if (typeof ym !== 'undefined') {
+
+        ym(104857779, 'reachGoal', 'promo_open');
+
+    }
+
+}
+
+
+
+function closePromoModal() {
+
+    document.getElementById('promoModal').style.display = 'none';
+
+    document.body.style.overflow = 'auto';
+
+}
+
+
+
+// Закрытие по ESC
+
+document.addEventListener('keydown', function(e) {
+
+    if (e.key === 'Escape') {
+
+        closePromoModal();
+
+    }
+
+});
+
+
+
+// Автоматическое открытие по URL параметру
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.get('promo') === 'open') {
+
+        openPromoModal();
+
+        // Отслеживание в Яндекс.Метрике
+
+        if (typeof ym !== 'undefined') {
+
+            ym(104857779, 'reachGoal', 'promo_direct_link');
+
+        }
+
+    }
+
+});
+
+</script>
+
+{% endblock %}
 
 {% endblock %}
