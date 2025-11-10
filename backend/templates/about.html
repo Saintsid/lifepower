@@ -3,22 +3,18 @@
 {% block title %}О центре | Сила жизни | Таганрог{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <div class="container">
-        <div class="hero-content">
-            <div class="hero-image-block">
-                <img src="/static/images/lifepower.jpeg" alt="Центр Сила жизни" class="hero-image">
-            </div>
-            <div class="hero-text">
-                <h2>О нашем центре</h2>
-                <p>Гармония с природой для Вашего благополучия</p>
-            </div>
-        </div>
-    </div>
-</section>
+
+{% set page_title = "О нашем центре" %}
+{% set page_subtitle = "Гармония с природой для Вашего благополучия" %}
+{% include 'components/page_header.html' %}
 
 <div class="container">
     <section>
+        <!-- ДОБАВИТЬ изображение как первый элемент -->
+        <div class="about-image-wrapper">
+            <img src="/static/images/lifepower.jpeg" alt="Центр Сила жизни" class="about-main-image">
+        </div>
+
         <h2>Наша философия</h2>
         <p style="font-size: 1.1rem; line-height: 1.8;">
             Центр "Сила жизни" был создан с убеждением, что человеческий организм обладает удивительной способностью

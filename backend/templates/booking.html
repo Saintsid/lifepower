@@ -4,11 +4,12 @@
 
 {% block content %}
 
+{% set page_title = "Запись на консультацию" %}
+{% set page_subtitle = "Оставьте заявку, и мы свяжемся с Вами в ближайшее время" %}
+{% include 'components/page_header.html' %}
+
 <div class="container">
-    <section class="first-section">
-        <div style="margin-top: 1rem;">
-            <h2>Запись на консультацию</h2>
-            <p>Оставьте заявку, и мы свяжемся с Вами в ближайшее время для уточнения деталей и записи.</p>
+    <section>
 
             <form class="contact-form" id="contactForm">
                 <div class="form-group">
