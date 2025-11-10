@@ -351,24 +351,39 @@ section h2 {
         left: 0;
         right: 0;
         z-index: 1000;
-        padding: 0.5rem 0;
+        padding: 1rem 0;
         width: 100%;
+    }
+
+    header .container {
+        max-width: none;
+        padding: 0;
     }
 
     .header-content {
         flex-direction: column;
         gap: 0.5rem;
         align-items: center;
+        width: 100%;
     }
 
     /* Логотип - компактный */
     .logo {
         padding: 0;
         justify-content: center;
+        width: 100%;
     }
 
     .logo-link {
         gap: 0.4rem;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .logo-image {
+        max-width: 100%;
+        height: auto;
+        max-height: 80px;
     }
 
     .logo-icon {
@@ -410,7 +425,7 @@ section h2 {
 
     /* Отступ для контента под фиксированный хедер */
     main {
-        padding-top: 5rem;
+        padding-top: 7rem;
     }
 
     .hero {
