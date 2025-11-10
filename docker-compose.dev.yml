@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  fastapi:
+    build: ./backend
+    container_name: lifepower_api_dev
+    restart: unless-stopped
+    ports:
+      - "8002:8000"  # Доступ: http://localhost:8002
+    environment:
+      DATABASE_URL: postgresql://lifepower:123456@postgres:5432/lifepower_db
+      SECRET_KEY: "xK9m2nP4qR8sT1vW5yZ7aB3cD6eF0gH9iJ2kL4mN7oP"
+      # Telegram токены можно убрать для локалки
+      # TELEGRAM_BOT_TOKEN: ""
+      # TELEGRAM_CHAT_ID: ""
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      # Hot reload для кода
+      - ./backend/app:/app
+      - ./backend/templates:/app/templates
+      - ./frontend/static:/app/static
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: lifepower_db_dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lifepower
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: lifepower_db
+    ports:
+      - "5433:5432"  # Порт 5433 чтобы не конфликтовать с prod
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lifepower -d lifepower_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data_dev:
