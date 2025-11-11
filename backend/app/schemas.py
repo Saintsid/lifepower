@@ -28,9 +28,9 @@ class BookingCreate(BaseModel):
     name: str
     phone: str
     email: Optional[str]
-    service: Optional[str]
+    service: str
     message: Optional[str]
-    referral_source: Optional[str] = None
+    referral_source: str
     referral_other: Optional[str] = None
 
 class BookingResponse(BaseModel):

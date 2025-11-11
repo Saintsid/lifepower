@@ -19,8 +19,8 @@
 
             <form class="contact-form" id="contactForm">
                 <div class="form-group">
-                    <label for="referralSource">Откуда Вы о нас узнали?</label>
-                    <select id="referralSource" name="referral_source" onchange="toggleReferralOther()" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
+                    <label for="referralSource">Откуда Вы о нас узнали? *</label>
+                    <select id="referralSource" name="referral_source" required onchange="toggleReferralOther()" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
                         <option value="">Выберите вариант</option>
                         <option value="internet_search">Интернет-поиск (Яндекс, Google)</option>
                         <option value="social_media">Социальные сети (ВКонтакте, Instagram)</option>
@@ -51,8 +51,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="service">Интересующая услуга</label>
-                    <select id="service" name="service" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
+                    <label for="service">Интересующая услуга *</label>
+                    <select id="service" name="service" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
                         <option value="">Выберите услугу</option>
                         <option value="nutrition">Онкосопровождение пациентов</option>
                         <option value="nutrition">Нутрициология</option>
@@ -199,6 +199,20 @@ document.getElementById('email').oninvalid = function(e) {
     }
 };
 document.getElementById('email').oninput = function(e) {
+    e.target.setCustomValidity('');
+};
+
+document.getElementById('referralSource').oninvalid = function(e) {
+    e.target.setCustomValidity('Пожалуйста, выберите, откуда Вы о нас узнали');
+};
+document.getElementById('referralSource').oninput = function(e) {
+    e.target.setCustomValidity('');
+};
+
+document.getElementById('service').oninvalid = function(e) {
+    e.target.setCustomValidity('Пожалуйста, выберите интересующую услугу');
+};
+document.getElementById('service').oninput = function(e) {
     e.target.setCustomValidity('');
 };
 

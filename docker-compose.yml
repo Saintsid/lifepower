@@ -15,7 +15,6 @@ services:
     depends_on:
       - postgres
     volumes:
-    volumes:
       # Hot reload для кода
       - ./backend/app:/app
       - ./backend/templates:/app/templates
