@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -22,6 +22,9 @@ from telegram import notify_new_booking
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+# API Router с префиксом /api
+api_router = APIRouter(prefix="/api")
 
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -103,7 +106,7 @@ def admin_dashboard(request: Request):
         "request": request
     })
 
-@app.post("/register", response_model=UserResponse)
+@api_router.post("/register", response_model=UserResponse)
 def register(user_data: UserRegister, db: Session = Depends(get_db)):
     existing = db.query(User).filter(User.email == user_data.email).first()
     if existing:
@@ -121,7 +124,7 @@ def register(user_data: UserRegister, db: Session = Depends(get_db)):
     db.refresh(user)
     return user
 
-@app.post("/login")
+@api_router.post("/login")
 def login(credentials: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == credentials.email).first()
     if not user or not verify_password(credentials.password, user.password_hash):
@@ -134,11 +137,11 @@ def login(credentials: UserLogin, db: Session = Depends(get_db)):
         "user": UserResponse.from_orm(user)
     }
 
-@app.get("/me", response_model=UserResponse)
+@api_router.get("/me", response_model=UserResponse)
 def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
-@app.post("/api/bookings", response_model=BookingResponse)
+@api_router.post("/bookings", response_model=BookingResponse)
 async def create_booking(
     booking_data: BookingCreate,
     db: Session = Depends(get_db),
@@ -175,21 +178,21 @@ async def create_booking(
     
     return booking
 
-@app.get("/bookings", response_model=List[BookingResponse])
+@api_router.get("/bookings", response_model=List[BookingResponse])
 def get_my_bookings(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     return db.query(Booking).filter(Booking.user_id == current_user.id).all()
 
-@app.get("/admin/bookings", response_model=List[BookingResponse])
+@api_router.get("/admin/bookings", response_model=List[BookingResponse])
 def get_all_bookings(
     admin: User = Depends(require_admin),
     db: Session = Depends(get_db)
 ):
     return db.query(Booking).order_by(Booking.created_at.desc()).all()
 
-@app.patch("/admin/bookings/{booking_id}", response_model=BookingResponse)
+@api_router.patch("/admin/bookings/{booking_id}", response_model=BookingResponse)
 def update_booking_status(
     booking_id: int,
     status_update: BookingStatusUpdate,
@@ -205,7 +208,7 @@ def update_booking_status(
     db.refresh(booking)
     return booking
 
-@app.get("/admin/stats", response_model=StatsResponse)
+@api_router.get("/admin/stats", response_model=StatsResponse)
 def get_stats(
     admin: User = Depends(require_admin),
     db: Session = Depends(get_db)
@@ -223,3 +226,6 @@ def get_stats(
         "completed_bookings": completed_bookings,
         "total_users": total_users
     }
+
+# Подключаем API роутер
+app.include_router(api_router)
