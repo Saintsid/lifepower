@@ -39,6 +39,7 @@ class BookingResponse(BaseModel):
     email: Optional[str]
     service: Optional[str]
     message: Optional[str]
+    comment: Optional[str]
     status: BookingStatus
     created_at: datetime
     
@@ -47,6 +48,9 @@ class BookingResponse(BaseModel):
 
 class BookingStatusUpdate(BaseModel):
     status: BookingStatus
+
+class BookingCommentUpdate(BaseModel):
+    comment: Optional[str]
 
 class StatsResponse(BaseModel):
     total_bookings: int

@@ -11,7 +11,7 @@ from database import engine, get_db, Base
 from models import User, Booking, UserRole, BookingStatus
 from schemas import (
     UserRegister, UserLogin, UserResponse,
-    BookingCreate, BookingResponse, BookingStatusUpdate, StatsResponse
+    BookingCreate, BookingResponse, BookingStatusUpdate, BookingCommentUpdate, StatsResponse
 )
 from auth import (
     get_password_hash, verify_password, create_access_token,
@@ -204,6 +204,22 @@ def update_booking_status(
         raise HTTPException(status_code=404, detail="Booking not found")
     
     booking.status = status_update.status
+    db.commit()
+    db.refresh(booking)
+    return booking
+
+@api_router.patch("/admin/bookings/{booking_id}/comment", response_model=BookingResponse)
+def update_booking_comment(
+    booking_id: int,
+    comment_update: BookingCommentUpdate,
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db)
+):
+    booking = db.query(Booking).filter(Booking.id == booking_id).first()
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    
+    booking.comment = comment_update.comment
     db.commit()
     db.refresh(booking)
     return booking

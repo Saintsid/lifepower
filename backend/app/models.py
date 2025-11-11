@@ -38,6 +38,7 @@ class Booking(Base):
     email = Column(String)
     service = Column(String)
     message = Column(String)
+    comment = Column(String)
     status = Column(Enum(BookingStatus), default=BookingStatus.new)
     created_at = Column(DateTime, default=datetime.utcnow)
     
