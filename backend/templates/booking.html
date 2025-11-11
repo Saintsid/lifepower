@@ -23,7 +23,7 @@
                     <select id="referralSource" name="referral_source" required onchange="toggleReferralOther()" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
                         <option value="">Выберите вариант</option>
                         <option value="internet_search">Интернет-поиск (Яндекс, Google)</option>
-                        <option value="social_media">Социальные сети (ВКонтакте, Instagram)</option>
+                        <option value="social_media">Социальные сети</option>
                         <option value="recommendation">Рекомендация знакомых</option>
                         <option value="outdoor_advertising">Наружная реклама\листовки</option>
                         <option value="other">Другое</option>
@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="form-group" id="referralOtherGroup" style="display: none;">
-                    <label for="referralOther">Уточните, пожалуйста</label>
+                    <label for="referralOther">Уточните, пожалуйста *</label>
                     <input type="text" id="referralOther" name="referral_other" placeholder="Напишите, откуда узнали" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
                 </div>
 
@@ -95,9 +95,14 @@ function toggleReferralOther() {
 
     if (select.value === 'other') {
         otherGroup.style.display = 'block';
+        otherInput.required = true;
+        otherInput.setAttribute('required', '');
     } else {
         otherGroup.style.display = 'none';
+        otherInput.required = false;
+        otherInput.removeAttribute('required');
         otherInput.value = '';
+        otherInput.setCustomValidity('');
     }
 }
 
@@ -213,6 +218,13 @@ document.getElementById('service').oninvalid = function(e) {
     e.target.setCustomValidity('Пожалуйста, выберите интересующую услугу');
 };
 document.getElementById('service').oninput = function(e) {
+    e.target.setCustomValidity('');
+};
+
+document.getElementById('referralOther').oninvalid = function(e) {
+    e.target.setCustomValidity('Пожалуйста, укажите, откуда Вы о нас узнали');
+};
+document.getElementById('referralOther').oninput = function(e) {
     e.target.setCustomValidity('');
 };
 

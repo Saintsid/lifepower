@@ -63,7 +63,14 @@
     <div class="modal-overlay" onclick="closeCommentModal()"></div>
     <div class="modal-content">
         <h4>Комментарий к заявке #<span id="commentModalBookingId"></span></h4>
-        <textarea id="commentModalTextarea" placeholder="Введите комментарий..."></textarea>
+        <div id="commentModalMessage" class="user-message" style="display: none;">
+            <h5>Сообщение пользователя:</h5>
+            <div id="commentModalMessageText" class="message-text"></div>
+        </div>
+        <div class="admin-comment">
+            <h5>Комментарий администратора:</h5>
+            <textarea id="commentModalTextarea" placeholder="Введите комментарий..."></textarea>
+        </div>
         <div class="modal-actions">
             <button type="button" class="button-secondary" onclick="closeCommentModal()">Отмена</button>
             <button type="button" class="button-primary" onclick="saveComment()">Сохранить</button>
@@ -178,7 +185,8 @@ async function loadBookings() {
                         class="comment-button ${b.comment ? 'comment-button--filled' : ''}"
                         data-booking-id="${b.id}"
                         data-comment="${b.comment ? escapeHtmlAttr(b.comment) : ''}"
-                        onclick="openCommentModal(this.dataset.bookingId, this.dataset.comment)"
+                        data-message="${b.message ? escapeHtmlAttr(b.message) : ''}"
+                        onclick="openCommentModal(this.dataset.bookingId, this.dataset.comment, this.dataset.message)"
                     >
                         Комментарий
                     </button>
@@ -224,7 +232,7 @@ async function loadDashboard() {
 
 let currentCommentBookingId = null;
 
-function openCommentModal(bookingId, comment) {
+function openCommentModal(bookingId, comment, message) {
     const numericId = Number(bookingId);
     if (Number.isNaN(numericId)) {
         return;
@@ -234,9 +242,19 @@ function openCommentModal(bookingId, comment) {
     const modal = document.getElementById('commentModal');
     const textarea = document.getElementById('commentModalTextarea');
     const bookingIdLabel = document.getElementById('commentModalBookingId');
+    const messageDiv = document.getElementById('commentModalMessage');
+    const messageText = document.getElementById('commentModalMessageText');
 
     bookingIdLabel.textContent = numericId;
     textarea.value = typeof comment === 'string' ? comment : '';
+
+    // Показываем сообщение пользователя, если оно есть
+    if (message && message.trim()) {
+        messageText.textContent = message.trim();
+        messageDiv.style.display = 'block';
+    } else {
+        messageDiv.style.display = 'none';
+    }
 
     modal.classList.remove('hidden');
     document.body.classList.add('modal-open');
@@ -389,13 +407,40 @@ loadDashboard();
     gap: 1rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
+.modal-content h5 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.user-message {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.message-text {
+    color: #374151;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.admin-comment {
+    margin-bottom: 1.5rem;
+}
+
 .modal-content textarea {
-    min-height: 160px;
+    min-height: 120px;
     padding: 0.8rem;
     border: 1px solid #ddd;
     border-radius: 8px;
     resize: vertical;
     font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 .modal-actions {
     display: flex;
