@@ -23,9 +23,9 @@ jobs:
             git reset --hard origin/main
 
             echo "🐳  Rebuilding containers..."
+            docker-compose down
             TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}" \
             TELEGRAM_CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            docker-compose down
             docker-compose up -d --build
 
             echo "🧹  Cleaning up..."
