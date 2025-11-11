@@ -2,36 +2,34 @@ name: Deploy LifePower
 
 on:
   push:
-    branches: [ "master", "main" ]
+    branches: [ "main" ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        
-      - name: Copy files to server
-        uses: burnett01/rsync-deployments@6.0.0
-        with:
-          switches: -avzr --delete --no-times --no-perms --exclude=logs/ --exclude=.git/ --exclude=.github/
-          path: ./
-          remote_path: /opt/lifepower
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_user: ${{ secrets.SSH_USERNAME }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          
-      - name: Deploy container
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            set -e
             cd /opt/lifepower
-            export TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
-            export TELEGRAM_CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}"
+
+            echo "📥  Pulling latest code..."
+            git fetch origin
+            git reset --hard origin/main
+
+            echo "🐳  Rebuilding containers..."
+            TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}" \
+            TELEGRAM_CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}" \
             docker-compose down
-            docker-compose build
-            docker-compose up -d
+            docker-compose up -d --build
+
+            echo "🧹  Cleaning up..."
             docker image prune -f
+
+            echo "✅  Deployment completed successfully!"
+            docker-compose ps
