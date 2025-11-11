@@ -46,13 +46,14 @@
                     <th>Email</th>
                     <th>Услуга</th>
                     <th>Статус</th>
-                    <th>Комментарий</th>
                     <th>Действия</th>
+                    <th>Откуда</th>
+                    <th>Комментарий</th>
                 </tr>
             </thead>
             <tbody id="bookingsBody">
                 <tr>
-                    <td colspan="9" style="text-align: center;">Загрузка...</td>
+                    <td colspan="10" style="text-align: center;">Загрузка...</td>
                 </tr>
             </tbody>
         </table>
@@ -82,6 +83,53 @@ const statusLabels = {
     'cancelled': 'Отменена'
 };
 
+const referralLabels = {
+    'internet_search': 'Интернет-поиск (Яндекс, Google)',
+    'social_media': 'Социальные сети (ВКонтакте, Instagram)',
+    'recommendation': 'Рекомендация знакомых',
+    'outdoor_advertising': 'Наружная реклама',
+    'previous_clients': 'От предыдущих клиентов',
+    'other': 'Другое'
+};
+
+function escapeHtml(value) {
+    if (value === null || value === undefined) {
+        return '';
+    }
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function escapeHtmlAttr(value) {
+    if (value === null || value === undefined) {
+        return '';
+    }
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\r\n|\r|\n/g, '&#10;');
+}
+
+function formatReferral(referralSource, referralOther) {
+    if (!referralSource) {
+        return '-';
+    }
+    if (referralSource === 'other') {
+        if (referralOther && referralOther.trim()) {
+            return escapeHtml(referralOther.trim());
+        }
+        return referralLabels.other;
+    }
+    return escapeHtml(referralLabels[referralSource] || referralSource);
+}
+
 async function loadStats() {
     const response = await apiRequest('/admin/stats');
     if (response.ok) {
@@ -101,7 +149,7 @@ async function loadBookings() {
         const tbody = document.getElementById('bookingsBody');
 
         if (bookings.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="9" style="text-align: center;">Записей пока нет</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">Записей пока нет</td></tr>';
             return;
         }
 
@@ -115,11 +163,6 @@ async function loadBookings() {
                 <td>${b.service || '-'}</td>
                 <td><span class="status-badge status-${b.status}">${statusLabels[b.status]}</span></td>
                 <td>
-                    <button class="comment-button ${b.comment ? 'comment-button--filled' : ''}" onclick="openCommentModal(${b.id}, ${JSON.stringify(b.comment || '')})">
-                        Комментарий
-                    </button>
-                </td>
-                <td>
                     <select class="status-select" onchange="updateStatus(${b.id}, this.value)" data-current="${b.status}">
                         <option value="">Изменить...</option>
                         <option value="new">Новая</option>
@@ -128,6 +171,17 @@ async function loadBookings() {
                         <option value="completed">Завершена</option>
                         <option value="cancelled">Отменена</option>
                     </select>
+                </td>
+                <td>${formatReferral(b.referral_source, b.referral_other)}</td>
+                <td>
+                    <button
+                        class="comment-button ${b.comment ? 'comment-button--filled' : ''}"
+                        data-booking-id="${b.id}"
+                        data-comment="${b.comment ? escapeHtmlAttr(b.comment) : ''}"
+                        onclick="openCommentModal(this.dataset.bookingId, this.dataset.comment)"
+                    >
+                        Комментарий
+                    </button>
                 </td>
             </tr>
         `).join('');
@@ -171,14 +225,18 @@ async function loadDashboard() {
 let currentCommentBookingId = null;
 
 function openCommentModal(bookingId, comment) {
-    currentCommentBookingId = bookingId;
+    const numericId = Number(bookingId);
+    if (Number.isNaN(numericId)) {
+        return;
+    }
+    currentCommentBookingId = numericId;
 
     const modal = document.getElementById('commentModal');
     const textarea = document.getElementById('commentModalTextarea');
     const bookingIdLabel = document.getElementById('commentModalBookingId');
 
-    bookingIdLabel.textContent = bookingId;
-    textarea.value = comment || '';
+    bookingIdLabel.textContent = numericId;
+    textarea.value = typeof comment === 'string' ? comment : '';
 
     modal.classList.remove('hidden');
     document.body.classList.add('modal-open');

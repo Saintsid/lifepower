@@ -157,7 +157,9 @@ async def create_booking(
         phone=booking_data.phone,
         email=booking_data.email,
         service=booking_data.service,
-        message=booking_data.message
+        message=booking_data.message,
+        referral_source=booking_data.referral_source,
+        referral_other=booking_data.referral_other if booking_data.referral_source == "other" else None
     )
     db.add(booking)
     db.commit()

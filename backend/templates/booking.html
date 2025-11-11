@@ -19,6 +19,23 @@
 
             <form class="contact-form" id="contactForm">
                 <div class="form-group">
+                    <label for="referralSource">Откуда Вы о нас узнали?</label>
+                    <select id="referralSource" name="referral_source" onchange="toggleReferralOther()" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
+                        <option value="">Выберите вариант</option>
+                        <option value="internet_search">Интернет-поиск (Яндекс, Google)</option>
+                        <option value="social_media">Социальные сети (ВКонтакте, Instagram)</option>
+                        <option value="recommendation">Рекомендация знакомых</option>
+                        <option value="outdoor_advertising">Наружная реклама\листовки</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="referralOtherGroup" style="display: none;">
+                    <label for="referralOther">Уточните, пожалуйста</label>
+                    <input type="text" id="referralOther" name="referral_other" placeholder="Напишите, откуда узнали" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
+                </div>
+
+                <div class="form-group">
                     <label for="name">Ваше имя *</label>
                     <input type="text" id="name" name="name" required>
                 </div>
@@ -37,6 +54,7 @@
                     <label for="service">Интересующая услуга</label>
                     <select id="service" name="service" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
                         <option value="">Выберите услугу</option>
+                        <option value="nutrition">Онкосопровождение пациентов</option>
                         <option value="nutrition">Нутрициология</option>
                         <option value="hirudotherapy">Гирудотерапия</option>
                         <option value="massage">Биоэнергетический массаж</option>
@@ -70,6 +88,21 @@
 <script src="/static/js/auth.js"></script>
 <script src="/static/js/form.js"></script>
 <script>
+function toggleReferralOther() {
+    const select = document.getElementById('referralSource');
+    const otherGroup = document.getElementById('referralOtherGroup');
+    const otherInput = document.getElementById('referralOther');
+
+    if (select.value === 'other') {
+        otherGroup.style.display = 'block';
+    } else {
+        otherGroup.style.display = 'none';
+        otherInput.value = '';
+    }
+}
+
+toggleReferralOther();
+
 // Автозаполнение для залогиненных пользователей
 async function prefillForm() {
     const user = await getCurrentUser();
@@ -78,6 +111,7 @@ async function prefillForm() {
         document.getElementById('phone').value = user.phone;
         document.getElementById('email').value = user.email;
     }
+    toggleReferralOther();
 }
 prefillForm();
 
@@ -89,12 +123,17 @@ document.getElementById('contactForm').addEventListener('submit', async function
         return;
     }
 
+    const referralSource = document.getElementById('referralSource').value;
+    const referralOther = document.getElementById('referralOther').value;
+
     const formData = {
         name: document.getElementById('name').value,
         phone: document.getElementById('phone').value,
         email: document.getElementById('email').value,
         service: document.getElementById('service').value,
-        message: document.getElementById('message').value
+        message: document.getElementById('message').value,
+        referral_source: referralSource || null,
+        referral_other: referralSource === 'other' ? (referralOther || null) : null
     };
 
     // Показываем индикатор загрузки
@@ -117,6 +156,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
             
             alert('Спасибо за Вашу заявку! Мы свяжемся с Вами в ближайшее время.');
             this.reset();
+            toggleReferralOther();
             
             // Если пользователь авторизован, предлагаем перейти в ЛК
             const user = await getCurrentUser();

@@ -39,6 +39,8 @@ class Booking(Base):
     service = Column(String)
     message = Column(String)
     comment = Column(String)
+    referral_source = Column(String, nullable=True)
+    referral_other = Column(String, nullable=True)
     status = Column(Enum(BookingStatus), default=BookingStatus.new)
     created_at = Column(DateTime, default=datetime.utcnow)
     
