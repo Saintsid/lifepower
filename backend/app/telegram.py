@@ -45,19 +45,23 @@ async def notify_new_booking(booking_data: dict, user_name: Optional[str] = None
     referral_info = ""
     referral_source = booking_data.get('referral_source')
     if referral_source:
+        referral_labels = {
+            'internet_search': 'Интернет-поиск (Яндекс, Google)',
+            'social_media': 'Социальные сети',
+            'recommendation': 'Рекомендация знакомых',
+            'outdoor_advertising': 'Наружная реклама',
+            'previous_clients': 'От предыдущих клиентов',
+            'other': 'Другое'
+        }
+        
+        base_label = referral_labels.get(referral_source, referral_source)
+        
         if referral_source == 'recommendation' and booking_data.get('referral_person'):
-            referral_info = f"\n<b>Откуда узнали:</b> Рекомендация знакомых ({booking_data.get('referral_person')})"
+            referral_info = f"\n<b>Откуда узнали:</b> {base_label}: {booking_data.get('referral_person')}"
         elif referral_source == 'other' and booking_data.get('referral_other'):
-            referral_info = f"\n<b>Откуда узнали:</b> {booking_data.get('referral_other')}"
+            referral_info = f"\n<b>Откуда узнали:</b> {base_label}: {booking_data.get('referral_other')}"
         else:
-            referral_labels = {
-                'internet_search': 'Интернет-поиск (Яндекс, Google)',
-                'social_media': 'Социальные сети',
-                'recommendation': 'Рекомендация знакомых',
-                'outdoor_advertising': 'Наружная реклама',
-                'previous_clients': 'От предыдущих клиентов'
-            }
-            referral_info = f"\n<b>Откуда узнали:</b> {referral_labels.get(referral_source, referral_source)}"
+            referral_info = f"\n<b>Откуда узнали:</b> {base_label}"
     
     message = f"""
 🆕 <b>Новая заявка на консультацию!</b>

@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label for="referralSource">Откуда Вы о нас узнали? *</label>
                     <select id="referralSource" name="referral_source" required onchange="toggleReferralOther()" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
-                        <option value="">Выберите вариант</option>
+                        <option value="" disabled selected hidden>Выберите вариант</option>
                         <option value="internet_search">Интернет-поиск (Яндекс, Google)</option>
                         <option value="social_media">Социальные сети</option>
                         <option value="recommendation">Рекомендация знакомых</option>
@@ -37,7 +37,7 @@
 
                 <div class="form-group" id="referralPersonGroup" style="display: none;">
                     <label for="referralPerson">Кто рекомендовал? *</label>
-                    <input type="text" id="referralPerson" name="referral_person" placeholder="Иван Иванов" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
+                    <input type="text" id="referralPerson" name="referral_person" placeholder="Иван Иванов" pattern="[А-Яа-яЁёA-Za-z\s]{3,}" title="Введите корректное имя" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
                 </div>
 
                 <div class="form-group">
@@ -58,7 +58,7 @@
                 <div class="form-group">
                     <label for="service">Интересующая услуга *</label>
                     <select id="service" name="service" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
-                        <option value="">Выберите услугу</option>
+                        <option value="" disabled selected hidden>Выберите услугу</option>
                         <option value="nutrition">Онкосопровождение пациентов</option>
                         <option value="nutrition">Нутрициология</option>
                         <option value="hirudotherapy">Гирудотерапия</option>
@@ -248,7 +248,7 @@ document.getElementById('referralOther').oninput = function(e) {
 };
 
 document.getElementById('referralPerson').oninvalid = function(e) {
-    e.target.setCustomValidity('Пожалуйста, укажите, кто порекомендовал наш центр');
+    e.target.setCustomValidity('Введите корректное имя');
 };
 document.getElementById('referralPerson').oninput = function(e) {
     e.target.setCustomValidity('');
