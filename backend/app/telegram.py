@@ -42,6 +42,23 @@ async def notify_new_booking(booking_data: dict, user_name: Optional[str] = None
     """
     user_type = "🔐 Зарегистрированный пользователь" if user_name else "👤 Анонимная заявка"
     
+    referral_info = ""
+    referral_source = booking_data.get('referral_source')
+    if referral_source:
+        if referral_source == 'recommendation' and booking_data.get('referral_person'):
+            referral_info = f"\n<b>Откуда узнали:</b> Рекомендация знакомых ({booking_data.get('referral_person')})"
+        elif referral_source == 'other' and booking_data.get('referral_other'):
+            referral_info = f"\n<b>Откуда узнали:</b> {booking_data.get('referral_other')}"
+        else:
+            referral_labels = {
+                'internet_search': 'Интернет-поиск (Яндекс, Google)',
+                'social_media': 'Социальные сети',
+                'recommendation': 'Рекомендация знакомых',
+                'outdoor_advertising': 'Наружная реклама',
+                'previous_clients': 'От предыдущих клиентов'
+            }
+            referral_info = f"\n<b>Откуда узнали:</b> {referral_labels.get(referral_source, referral_source)}"
+    
     message = f"""
 🆕 <b>Новая заявка на консультацию!</b>
 
@@ -51,7 +68,7 @@ async def notify_new_booking(booking_data: dict, user_name: Optional[str] = None
 <b>Телефон:</b> {booking_data.get('phone', '-')}
 <b>Email:</b> {booking_data.get('email', '-')}
 <b>Услуга:</b> {booking_data.get('service', 'Не указана')}
-<b>Сообщение:</b> {booking_data.get('message', '-')}
+<b>Сообщение:</b> {booking_data.get('message', '-')}{referral_info}
 
 📊 Статус: Новая
 🕐 Время: {booking_data.get('created_at', '-')}

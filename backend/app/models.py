@@ -41,6 +41,7 @@ class Booking(Base):
     comment = Column(String)
     referral_source = Column(String, nullable=True)
     referral_other = Column(String, nullable=True)
+    referral_person = Column(String, nullable=True)  # Имя рекомендателя
     status = Column(Enum(BookingStatus), default=BookingStatus.new)
     created_at = Column(DateTime, default=datetime.utcnow)
     

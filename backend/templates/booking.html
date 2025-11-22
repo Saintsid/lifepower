@@ -35,6 +35,11 @@
                     <input type="text" id="referralOther" name="referral_other" placeholder="Напишите, откуда узнали" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
                 </div>
 
+                <div class="form-group" id="referralPersonGroup" style="display: none;">
+                    <label for="referralPerson">Кто рекомендовал? *</label>
+                    <input type="text" id="referralPerson" name="referral_person" placeholder="Иван Иванов" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
+                </div>
+
                 <div class="form-group">
                     <label for="name">Ваше имя *</label>
                     <input type="text" id="name" name="name" required>
@@ -91,17 +96,31 @@ function toggleReferralOther() {
     const select = document.getElementById('referralSource');
     const otherGroup = document.getElementById('referralOtherGroup');
     const otherInput = document.getElementById('referralOther');
+    const personGroup = document.getElementById('referralPersonGroup');
+    const personInput = document.getElementById('referralPerson');
 
+    // Сбрасываем все дополнительные поля
+    otherGroup.style.display = 'none';
+    otherInput.required = false;
+    otherInput.removeAttribute('required');
+    otherInput.value = '';
+    otherInput.setCustomValidity('');
+
+    personGroup.style.display = 'none';
+    personInput.required = false;
+    personInput.removeAttribute('required');
+    personInput.value = '';
+    personInput.setCustomValidity('');
+
+    // Показываем нужное поле
     if (select.value === 'other') {
         otherGroup.style.display = 'block';
         otherInput.required = true;
         otherInput.setAttribute('required', '');
-    } else {
-        otherGroup.style.display = 'none';
-        otherInput.required = false;
-        otherInput.removeAttribute('required');
-        otherInput.value = '';
-        otherInput.setCustomValidity('');
+    } else if (select.value === 'recommendation') {
+        personGroup.style.display = 'block';
+        personInput.required = true;
+        personInput.setAttribute('required', '');
     }
 }
 
@@ -137,7 +156,8 @@ document.getElementById('contactForm').addEventListener('submit', async function
         service: document.getElementById('service').value,
         message: document.getElementById('message').value,
         referral_source: referralSource || null,
-        referral_other: referralSource === 'other' ? (referralOther || null) : null
+        referral_other: referralSource === 'other' ? (referralOther || null) : null,
+        referral_person: referralSource === 'recommendation' ? (document.getElementById('referralPerson').value || null) : null
     };
 
     // Показываем индикатор загрузки
@@ -224,6 +244,13 @@ document.getElementById('referralOther').oninvalid = function(e) {
     e.target.setCustomValidity('Пожалуйста, укажите, откуда Вы о нас узнали');
 };
 document.getElementById('referralOther').oninput = function(e) {
+    e.target.setCustomValidity('');
+};
+
+document.getElementById('referralPerson').oninvalid = function(e) {
+    e.target.setCustomValidity('Пожалуйста, укажите, кто порекомендовал наш центр');
+};
+document.getElementById('referralPerson').oninput = function(e) {
     e.target.setCustomValidity('');
 };
 

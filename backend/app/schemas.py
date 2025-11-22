@@ -32,6 +32,7 @@ class BookingCreate(BaseModel):
     message: Optional[str]
     referral_source: str
     referral_other: Optional[str] = None
+    referral_person: Optional[str] = None
 
 class BookingResponse(BaseModel):
     id: int
@@ -44,6 +45,7 @@ class BookingResponse(BaseModel):
     comment: Optional[str]
     referral_source: Optional[str]
     referral_other: Optional[str]
+    referral_person: Optional[str]
     status: BookingStatus
     created_at: datetime
     

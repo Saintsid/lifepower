@@ -159,7 +159,8 @@ async def create_booking(
         service=booking_data.service,
         message=booking_data.message,
         referral_source=booking_data.referral_source,
-        referral_other=booking_data.referral_other if booking_data.referral_source == "other" else None
+        referral_other=booking_data.referral_other if booking_data.referral_source == "other" else None,
+        referral_person=booking_data.referral_person if booking_data.referral_source == "recommendation" else None
     )
     db.add(booking)
     db.commit()
@@ -173,6 +174,9 @@ async def create_booking(
             "email": booking.email or "Не указан",
             "service": booking.service or "Не указана",
             "message": booking.message or "Нет сообщения",
+            "referral_source": booking.referral_source,
+            "referral_other": booking.referral_other,
+            "referral_person": booking.referral_person,
             "created_at": booking.created_at.strftime("%d.%m.%Y %H:%M")
         },
         user_name=current_user.name if current_user else None

@@ -124,7 +124,7 @@ function escapeHtmlAttr(value) {
         .replace(/\r\n|\r|\n/g, '&#10;');
 }
 
-function formatReferral(referralSource, referralOther) {
+function formatReferral(referralSource, referralOther, referralPerson) {
     if (!referralSource) {
         return '-';
     }
@@ -133,6 +133,12 @@ function formatReferral(referralSource, referralOther) {
             return escapeHtml(referralOther.trim());
         }
         return referralLabels.other;
+    }
+    if (referralSource === 'recommendation') {
+        if (referralPerson && referralPerson.trim()) {
+            return `${referralLabels.recommendation}: ${escapeHtml(referralPerson.trim())}`;
+        }
+        return referralLabels.recommendation;
     }
     return escapeHtml(referralLabels[referralSource] || referralSource);
 }
@@ -179,7 +185,7 @@ async function loadBookings() {
                         <option value="cancelled">Отменена</option>
                     </select>
                 </td>
-                <td>${formatReferral(b.referral_source, b.referral_other)}</td>
+                <td>${formatReferral(b.referral_source, b.referral_other, b.referral_person)}</td>
                 <td>
                     <button
                         class="comment-button ${b.comment ? 'comment-button--filled' : ''}"
