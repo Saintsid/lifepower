@@ -1,3 +1,5 @@
+/* Общие стили для всех устройств */
+
 * {
     margin: 0;
     padding: 0;
@@ -59,18 +61,9 @@ header {
     opacity: 0.85;
 }
 
-.logo-image {
-    height: 90px;
-    width: auto;
-    object-fit: contain;
-}
-
-/* Удалить старые стили .logo-icon и .logo h1 */
-
 nav ul {
     list-style: none;
     display: flex;
-    gap: 2rem;
 }
 
 nav a {
@@ -85,8 +78,6 @@ nav a.active {
     color: var(--primary-color);
     text-decoration: underline;
 }
-
-/* УДАЛИТЬ nav a.booking-btn - кнопка больше не нужна в навигации */
 
 .page-booking-button {
     text-align: center;
@@ -113,40 +104,18 @@ nav a.active {
 .hero {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: var(--white);
-    padding: 1.5rem 0;
     position: relative;
     overflow: hidden;
-}
-
-.hero-content {
-    display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 2rem;
-    align-items: center;
-    min-height: 240px;
 }
 
 .hero-text {
     z-index: 2;
 }
 
-.hero-text h2 {
-    font-size: 2.2rem;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-}
-
-.hero-text p {
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-}
-
 .hero-btn {
     display: inline-block;
     background: var(--white);
     color: var(--primary-color);
-    padding: 0.9rem 1.8rem;
     text-decoration: none;
     border-radius: 4px;
     font-weight: 600;
@@ -174,7 +143,6 @@ nav a.active {
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     object-fit: cover;
-    max-height: 240px;
     transition: box-shadow 0.4s ease;
 }
 
@@ -182,7 +150,6 @@ nav a.active {
     box-shadow: 0 15px 40px rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.15);
 }
 
-/* Простой hero для внутренних страниц */
 .hero-simple {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: var(--white);
@@ -190,25 +157,9 @@ nav a.active {
     text-align: center;
 }
 
-.hero-simple h2 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.hero-simple p {
-    font-size: 1.2rem;
-}
-
 main {
     padding: 0 0 3rem 0;
     min-height: 60vh;
-}
-
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
 }
 
 .service-card {
@@ -326,13 +277,6 @@ section h2 {
     margin-bottom: 1.5rem;
 }
 
-.advantages {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
-}
-
 .advantage-item {
     text-align: center;
     padding: 1.5rem;
@@ -341,157 +285,6 @@ section h2 {
 .advantage-item h3 {
     color: var(--secondary-color);
     margin-bottom: 0.5rem;
-}
-
-@media (max-width: 768px) {
-    /* Header - закреплён вверху */
-    header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-        padding: 1rem 0;
-        width: 100%;
-    }
-
-    header .container {
-        max-width: none;
-        padding: 0;
-    }
-
-    .header-content {
-        flex-direction: column;
-        gap: 0.5rem;
-        align-items: center;
-        width: 100%;
-    }
-
-    /* Логотип - компактный */
-    .logo {
-        padding: 0;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .logo-link {
-        gap: 0.4rem;
-        width: 100%;
-        justify-content: center;
-    }
-
-    .logo-image {
-        max-width: 100%;
-        height: auto;
-        max-height: 80px;
-    }
-
-    .logo-icon {
-        width: 28px;
-        height: 28px;
-    }
-
-    .logo h1 {
-        font-size: 1rem;
-    }
-
-    /* Навигация - горизонтально в одну строку */
-    nav {
-        position: static;
-        background: transparent;
-        padding: 0;
-        margin-top: 0;
-        width: 100%;
-    }
-
-    nav ul {
-        flex-direction: row;
-        gap: 0.4rem;
-        justify-content: center;
-        flex-wrap: nowrap;
-        text-align: center;
-    }
-
-    nav li {
-        flex: 0 1 auto;
-    }
-
-    nav a {
-        font-size: 1.1rem;
-        padding: 0.25rem 0.4rem;
-        display: inline-block;
-        white-space: nowrap;
-    }
-
-    /* Отступ для контента под фиксированный хедер */
-    main {
-        padding-top: 7rem;
-    }
-
-    .hero {
-        padding: 1.2rem 0;
-    }
-
-    /* Остальные стили без изменений */
-    .hero-content {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        min-height: auto;
-    }
-
-    .hero-text h2 {
-        font-size: 1.6rem;
-        margin-bottom: 0.8rem;
-    }
-
-    .hero-text p {
-        font-size: 0.95rem;
-        margin-bottom: 1.2rem;
-    }
-
-    .hero-image {
-        max-height: 180px;
-    }
-
-    .hero-btn {
-        display: block;
-        text-align: center;
-        width: 100%;
-        padding: 0.8rem 1.5rem;
-    }
-
-    .hero-simple h2 {
-        font-size: 1.8rem;
-    }
-
-    .hero-simple p {
-        font-size: 1rem;
-    }
-
-    .services-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .about-main-image {
-        max-height: 250px;
-    }
-
-    .hero-welcome-section {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .hero-welcome-text {
-        order: -1;
-    }
-    
-    .hero-welcome-text h2 {
-        text-align: center;
-    }
-    
-    .hero-welcome-text p {
-        text-align: center;
-    }
 }
 
 .about-image-wrapper {
@@ -504,15 +297,13 @@ section h2 {
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    max-height: 400px;
     object-fit: cover;
 }
-/* Отступ для первой секции на главной странице */
+
 .first-section {
     padding-top: 1rem;
 }
 
-/* Карточка-тизер акции */
 .promo-teaser {
     margin: 2rem 0;
 }
@@ -534,7 +325,6 @@ section h2 {
 
 .promo-card-mini h2 {
     color: var(--primary-color);
-    font-size: 2.2rem;
     margin-bottom: 1rem;
 }
 
@@ -681,56 +471,4 @@ section h2 {
     margin: 1rem 0;
     font-size: 1.1rem;
     padding: 1rem 2rem;
-}
-
-/* Hero welcome секция на главной */
-.hero-welcome-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    margin: 1.5rem 0 2.5rem 0;
-}
-
-.hero-welcome-image {
-    flex: 0 0 auto;
-}
-
-.hero-welcome-image img {
-    width: auto;
-    height: 270px;
-    object-fit: contain;
-}
-
-.hero-welcome-text {
-    flex: 0 1 600px;
-    max-width: 600px;
-}
-
-.hero-welcome-text h2 {
-    color: var(--primary-color);
-    font-size: 1.8rem;
-    margin-bottom: 0.8rem;
-    line-height: 1.3;
-}
-
-.hero-welcome-text p {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: var(--text-dark);
-}
-
-@media (max-width: 768px) {
-    .promo-card-mini h2 {
-        font-size: 1.6rem;
-    }
-
-    .modal-content {
-        padding: 2rem 1.5rem;
-        width: 95%;
-    }
-
-    .modal-content h2 {
-        font-size: 1.6rem;
-    }
 }

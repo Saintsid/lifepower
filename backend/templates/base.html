@@ -6,7 +6,15 @@
     <meta name="description" content="Сила жизни - Оздоровительный центр в Таганроге. Нутрициология, гирудотерапия, массаж, фитобочка.">
     <title>{% block title %}Сила жизни{% endblock %}</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon-32x32.png">
-    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- Общие стили для всех устройств -->
+    <link rel="stylesheet" href="/static/css/style-common.css">
+
+    <!-- Стили для мобильных устройств -->
+    <link rel="stylesheet" href="/static/css/style-mobile.css" media="(max-width: 768px)">
+
+    <!-- Стили для десктопа -->
+    <link rel="stylesheet" href="/static/css/style-desktop.css" media="(min-width: 769px)">
     
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
