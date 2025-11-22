@@ -275,6 +275,7 @@ section h2 {
     color: var(--primary-color);
     font-size: 2rem;
     margin-bottom: 1.5rem;
+    text-align: center; 
 }
 
 .advantage-item {
