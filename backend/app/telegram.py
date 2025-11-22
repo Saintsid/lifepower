@@ -5,6 +5,18 @@ from typing import Optional
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
+# Словарь соответствия технических названий услуг человекочитаемым
+SERVICE_LABELS = {
+    'oncology': 'Онкосопровождение пациентов',
+    'nutrition': 'Нутрициология',
+    'hirudotherapy': 'Гирудотерапия',
+    'massage': 'Биоэнергетический массаж',
+    'phytobarrel': 'Фитобочка',
+    'stress': 'Управление стрессом',
+    'complex': 'Комплексная программа',
+    'consultation': 'Первичная консультация'
+}
+
 async def send_telegram_notification(message: str) -> bool:
     """
     Отправляет уведомление в Telegram
@@ -45,24 +57,23 @@ async def notify_new_booking(booking_data: dict, user_name: Optional[str] = None
     referral_info = ""
     referral_source = booking_data.get('referral_source')
     if referral_source:
-        referral_labels = {
-            'internet_search': 'Интернет-поиск (Яндекс, Google)',
-            'social_media': 'Социальные сети',
-            'recommendation': 'Рекомендация знакомых',
-            'outdoor_advertising': 'Наружная реклама',
-            'previous_clients': 'От предыдущих клиентов',
-            'other': 'Другое'
-        }
-        
-        base_label = referral_labels.get(referral_source, referral_source)
-        
         if referral_source == 'recommendation' and booking_data.get('referral_person'):
-            referral_info = f"\n<b>Откуда узнали:</b> {base_label}: {booking_data.get('referral_person')}"
+            referral_info = f"\n<b>Откуда узнали:</b> Рекомендация знакомых ({booking_data.get('referral_person')})"
         elif referral_source == 'other' and booking_data.get('referral_other'):
-            referral_info = f"\n<b>Откуда узнали:</b> {base_label}: {booking_data.get('referral_other')}"
+            referral_info = f"\n<b>Откуда узнали:</b> {booking_data.get('referral_other')}"
         else:
-            referral_info = f"\n<b>Откуда узнали:</b> {base_label}"
-    
+            referral_labels = {
+                'internet_search': 'Интернет-поиск (Яндекс, Google)',
+                'social_media': 'Социальные сети',
+                'recommendation': 'Рекомендация знакомых',
+                'outdoor_advertising': 'Наружная реклама',
+                'previous_clients': 'От предыдущих клиентов'
+            }
+            referral_info = f"\n<b>Откуда узнали:</b> {referral_labels.get(referral_source, referral_source)}"
+
+    service = booking_data.get('service')
+    service_display = SERVICE_LABELS.get(service, service if service else 'Не указана')
+
     message = f"""
 🆕 <b>Новая заявка на консультацию!</b>
 
@@ -71,7 +82,7 @@ async def notify_new_booking(booking_data: dict, user_name: Optional[str] = None
 <b>Имя:</b> {booking_data.get('name', '-')}
 <b>Телефон:</b> {booking_data.get('phone', '-')}
 <b>Email:</b> {booking_data.get('email', '-')}
-<b>Услуга:</b> {booking_data.get('service', 'Не указана')}
+<b>Услуга:</b> {service_display}
 <b>Сообщение:</b> {booking_data.get('message', '-')}{referral_info}
 
 📊 Статус: Новая

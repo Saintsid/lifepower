@@ -99,6 +99,17 @@ const referralLabels = {
     'other': 'Другое'
 };
 
+const serviceLabels = {
+    'oncology': 'Онкосопровождение пациентов',
+    'nutrition': 'Нутрициология',
+    'hirudotherapy': 'Гирудотерапия',
+    'massage': 'Биоэнергетический массаж',
+    'phytobarrel': 'Фитобочка',
+    'stress': 'Управление стрессом',
+    'complex': 'Комплексная программа',
+    'consultation': 'Первичная консультация'
+};
+
 function escapeHtml(value) {
     if (value === null || value === undefined) {
         return '';
@@ -173,7 +184,7 @@ async function loadBookings() {
                 <td>${b.name}</td>
                 <td><a href="tel:${b.phone}">${b.phone}</a></td>
                 <td>${b.email || '-'}</td>
-                <td>${b.service || '-'}</td>
+                <td>${b.service ? (serviceLabels[b.service] || b.service) : '-'}</td>
                 <td><span class="status-badge status-${b.status}">${statusLabels[b.status]}</span></td>
                 <td>
                     <select class="status-select" onchange="updateStatus(${b.id}, this.value)" data-current="${b.status}">
