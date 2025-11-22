@@ -22,7 +22,7 @@
                 <div class="contact-info">
                     <h3>📞 Телефон</h3>
                     <p><a href="tel:+79281905001" onclick="if(typeof ym !== 'undefined') ym(104857779, 'reachGoal', 'phone_click')">+7 (928) 190-50-01</a></p>
-                
+
                     <a href="https://wa.me/79281905001?text=Здравствуйте!%20Хочу%20записаться%20на%20консультацию"
                        target="_blank"
                        onclick="if(typeof ym !== 'undefined') ym(104857779, 'reachGoal', 'whatsapp_click')"
@@ -32,7 +32,33 @@
                         💬 Написать в WhatsApp
                     </a>
                 </div>
-                
+
+                <div class="contact-info">
+                    <h3>💬 Мы ВКонтакте</h3>
+                    <a href="https://vk.com/sila_zing"
+                       target="_blank"
+                       onclick="if(typeof ym !== 'undefined') ym(104857779, 'reachGoal', 'vk_click')"
+                       style="display: inline-flex; align-items: center; gap: 0.5rem;
+                              padding: 0.8rem 1.5rem; background: #0077FF; color: white;
+                              text-decoration: none; border-radius: 8px; font-weight: 500;
+                              transition: opacity 0.3s;">
+                        <img src="/static/images/vk-icon.png" alt="VK" style="width: 24px; height: 24px;">
+                        Мы ВКонтакте
+                    </a>
+                    <p style="margin-top: 0.8rem; color: var(--text-light); font-size: 0.9rem;">
+                        Отзывы клиентов и новости центра
+                    </p>
+                </div>
+            </div>
+
+            <!-- Режим работы и Email в одну строку -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div class="contact-info">
+                    <h3>🕐 Режим работы</h3>
+                    <p><strong>Понедельник - Пятница:</strong> 9:00 - 20:00</p>
+                    <p><strong>Суббота:</strong> 10:00 - 18:00</p>
+                    <p><strong>Воскресенье:</strong> Выходной</p>
+                </div>
 
                 <div class="contact-info">
                     <h3>✉️ Email</h3>
@@ -41,12 +67,6 @@
                 </div>
             </div>
 
-            <div class="contact-info" style="margin-top: 2rem;">
-                <h3>🕐 Режим работы</h3>
-                <p><strong>Понедельник - Пятница:</strong> 9:00 - 20:00</p>
-                <p><strong>Суббота:</strong> 10:00 - 18:00</p>
-                <p><strong>Воскресенье:</strong> Выходной</p>
-            </div>
 
             <div style="text-align: center; margin-top: 2rem;">
                 <a href="/booking" class="btn">Записаться на консультацию</a>
