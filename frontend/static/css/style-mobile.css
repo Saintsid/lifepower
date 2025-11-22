@@ -148,6 +148,18 @@ main {
     text-align: center;
 }
 
+.hero-welcome-image {
+    width: 100%;
+    text-align: center;
+}
+
+.hero-welcome-image img {
+    max-width: 100%;
+    height: auto;
+    max-height: 180px;
+    object-fit: contain;
+}
+
 .promo-card-mini h2 {
     font-size: 1.6rem;
 }
