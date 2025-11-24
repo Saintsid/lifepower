@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Запись на консультацию | Сила жизни | Таганрог{% endblock %}
+{% block title %}Запись на консультацию специалиста интегративной медицины | Сила жизни | Таганрог{% endblock %}
 
 {% block content %}
 
@@ -59,6 +59,7 @@
                     <label for="service">Интересующая услуга *</label>
                     <select id="service" name="service" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
                         <option value="" disabled selected hidden>Выберите услугу</option>
+                        <option value="integrative_medicine">Специалист интегративной медицины</option>
                         <option value="oncology">Онкосопровождение пациентов</option>
                         <option value="nutrition">Нутрициология</option>
                         <option value="hirudotherapy">Гирудотерапия</option>
