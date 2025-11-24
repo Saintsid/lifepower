@@ -7,6 +7,7 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 # Словарь соответствия технических названий услуг человекочитаемым
 SERVICE_LABELS = {
+    'integrative_medicine': 'Специалист интегративной медицины',
     'oncology': 'Онкосопровождение пациентов',
     'nutrition': 'Нутрициология',
     'hirudotherapy': 'Гирудотерапия',
