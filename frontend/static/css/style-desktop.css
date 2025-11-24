@@ -53,7 +53,7 @@ nav ul {
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);  /* 2 колонки вместо auto-fit */
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     margin-top: 2rem;
     max-width: 900px;
