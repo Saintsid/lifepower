@@ -122,4 +122,19 @@
         </div>
     </section>
 </div>
+
+<style>
+    /* Переопределяем сетку для страницы услуг: 2 столбца вместо 3 */
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* На мобильных устройствах оставляем 1 столбец */
+    @media (max-width: 768px) {
+        .services-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
+</style>
+
 {% endblock %}
