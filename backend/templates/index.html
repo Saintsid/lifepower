@@ -222,6 +222,53 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 
+<style>
+    /* Стили для главной страницы - карточки одинаковой высоты и шире */
+    .container {
+        max-width: 1400px !important; /* Делаем контейнер шире */
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        align-items: stretch; /* Все карточки одинаковой высоты */
+    }
+
+    .service-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Растягиваем на всю высоту */
+    }
+
+    .service-card h3 {
+        min-height: 3rem; /* Фиксируем высоту заголовков */
+        display: flex;
+        align-items: center;
+    }
+
+    .service-card p {
+        flex-grow: 1; /* Текст занимает оставшееся пространство */
+    }
+
+    /* На планшетах - 2 столбца */
+    @media (max-width: 1024px) {
+        .services-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* На мобильных - 1 столбец */
+    @media (max-width: 768px) {
+        .container {
+            max-width: 100% !important;
+        }
+        .services-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
 {% endblock %}
 
 {% endblock %}
