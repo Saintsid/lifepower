@@ -1,18 +1,9 @@
 {% extends "base.html" %}
-
 {% block title %}Сила жизни | Центр здоровья | Таганрог{% endblock %}
-
 {% block content %}
-
-
 {% include 'components/page_header.html' %}
-
-
-
 <div class="container">
-
     <section>
-
         <div class="hero-welcome-section">
             <div class="hero-welcome-text">
                 <h2>Добро пожаловать в «Силу жизни»</h2>
@@ -23,58 +14,37 @@
                 <img src="/static/images/lifepower3.jpg" alt="Сила жизни - 4 стихии здоровья">
             </div>
         </div>
-
-
         <div class="advantages">
-
             <div class="advantage-item">
-
                 <h3>🌿 Натуральные методы</h3>
-
                 <p>Используем клинически подтвержденные способы оздоровления</p>
-
             </div>
-
             <div class="advantage-item">
-
                 <h3>👨‍⚕️ Профессионализм</h3>
-
                 <p>Опытные специалисты с государственными дипломами и сертификатами</p>
-
             </div>
-
             <div class="advantage-item">
-
                 <h3>🎯 Индивидуальный подход</h3>
-
                 <p>Программы подбираются под каждого клиента</p>
-
             </div>
-
             <div class="advantage-item">
                 <h3>✅ Проверенные результаты</h3>
                 <p>Тысячи довольных клиентов</p>
                 <a href="https://vk.com/sila_zing" target="_blank" class="vk-link">
-                    <img src="/static/images/vk-icon.png" alt="VK" style="width:20px; vertical-align:middle;"> 
+                    <img src="/static/images/vk-icon.png" alt="VK" style="width:20px; vertical-align:middle;">
                     Отзывы клиентов
                 </a>
             </div>
-
-            </div>
-
         </div>
-
     </section>
-
-<!-- Карточка-тизер акции -->
-<section class="promo-teaser">
-    <div class="promo-card-mini">
-        <h3>🎁 Специальное предложение!</h3>
-        <h2>МАССАЖ В ПОДАРОК!</h2>
-        <button class="btn promo-btn" onclick="openPromoModal()">Узнать подробности →</button>
-    </div>
-</section>
-
+    <!-- Карточка-тизер акции -->
+    <section class="promo-teaser">
+        <div class="promo-card-mini">
+            <h3>🎁 Специальное предложение!</h3>
+            <h2>МАССАЖ В ПОДАРОК!</h2>
+            <button class="btn promo-btn" onclick="openPromoModal()">Узнать подробности →</button>
+        </div>
+    </section>
     <section style="margin-top: 3rem;">
         <h2>Популярные услуги</h2>
         <div class="services-grid">
@@ -82,146 +52,80 @@
                 <h3>Специалист интегративной медицины</h3>
                 <p>Комплексная оценка состояния организма с учетом медицинской истории, образа жизни, пищевых привычек и психоэмоционального фона.</p>
             </div>
-
             <div class="service-card">
                 <h3>Онкосопровождение пациентов</h3>
                 <p>Интеграция с основным лечением, улучшение толерантности к терапии, снижение токсичности, поддержка иммунной системы и гемоглобина, нормализация веса.</p>
             </div>
-
             <div class="service-card">
                 <h3>Нутрициология</h3>
                 <p>Консультации по питанию, подбор рациона, программы снижения веса с учетом индивидуальных особенностей организма.</p>
             </div>
-
             <div class="service-card">
                 <h3>Гирудотерапия</h3>
                 <p>Лечение медицинскими пиявками для улучшения кровообращения и общего оздоровления организма.</p>
             </div>
-
             <div class="service-card">
                 <h3>Биоэнергетический массаж</h3>
                 <p>Глубокая работа с энергетическими центрами тела для снятия напряжения и восстановления баланса.</p>
             </div>
-
             <div class="service-card">
                 <h3>Фитобочка</h3>
                 <p>Травяная паровая процедура для детоксикации, улучшения состояния кожи и общего оздоровления.</p>
             </div>
         </div>
     </section>
-
-<!-- Модальное окно -->
-<div id="promoModal" class="modal">
-    <div class="modal-overlay" onclick="closePromoModal()"></div>
-    <div class="modal-content">
-        <span class="modal-close" onclick="closePromoModal()">&times;</span>
-
-        <h3>🎁 Специальное предложение!</h3>
-
-        <div class="modal-highlight">
-
-            <p>Станьте участником <strong>МАСТЕР-КЛАССА</strong> на тему здоровья и получите</p>
-
+    <!-- Модальное окно -->
+    <div id="promoModal" class="modal">
+        <div class="modal-overlay" onclick="closePromoModal()"></div>
+        <div class="modal-content">
+            <span class="modal-close" onclick="closePromoModal()">&times;</span>
+            <h3>🎁 Специальное предложение!</h3>
+            <div class="modal-highlight">
+                <p>Станьте участником <strong>МАСТЕР-КЛАССА</strong> на тему здоровья и получите</p>
+            </div>
+            <h2>МАССАЖ В ПОДАРОК!</h2>
+            <p style="font-size: 1.1rem; margin: 0.5rem 0;">(40 минут)</p>
+            <div class="modal-details">
+                <p class="modal-price">Стоимость: <span class="old-price">1500₽</span> → <strong class="free-price">0₽</strong></p>
+            </div>
+            <div class="modal-contacts">
+                <a href="/booking" class="btn modal-booking-btn" onclick="closePromoModal(); if(typeof ym !== 'undefined') ym(104857779, 'reachGoal', 'promo_booking_click')">
+                    Записаться на мастер-класс
+                </a>
+                <p class="modal-address">📍 Адрес: пер. Смирновский, 10</p>
+            </div>
+            <p class="modal-note">* Количество мест ограничено. Подробности по телефону.</p>
         </div>
-
-        <h2>МАССАЖ В ПОДАРОК!</h2>
-
-        <p style="font-size: 1.1rem; margin: 0.5rem 0;">(40 минут)</p>
-
-        <div class="modal-details">
-
-            <p class="modal-price">Стоимость: <span class="old-price">1500₽</span> → <strong class="free-price">0₽</strong></p>
-
-        </div>
-
-        <div class="modal-contacts">
-
-            <a href="/booking" class="btn modal-booking-btn" onclick="closePromoModal(); if(typeof ym !== 'undefined') ym(104857779, 'reachGoal', 'promo_booking_click')">
-
-                Записаться на мастер-класс
-
-            </a>
-
-            <p class="modal-address">📍 Адрес: пер. Смирновский, 10</p>
-
-        </div>
-
-        <p class="modal-note">* Количество мест ограничено. Подробности по телефону.</p>
     </div>
 </div>
-
-</div>
-
 {% block scripts %}
-
 <script>
-
 function openPromoModal() {
-
     document.getElementById('promoModal').style.display = 'flex';
-
     document.body.style.overflow = 'hidden';
-
-    // Яндекс.Метрика
-
     if (typeof ym !== 'undefined') {
-
         ym(104857779, 'reachGoal', 'promo_open');
-
     }
-
 }
-
-
-
 function closePromoModal() {
-
     document.getElementById('promoModal').style.display = 'none';
-
     document.body.style.overflow = 'auto';
-
 }
-
-
-
-// Закрытие по ESC
-
 document.addEventListener('keydown', function(e) {
-
     if (e.key === 'Escape') {
-
         closePromoModal();
-
     }
-
 });
-
-
-
-// Автоматическое открытие по URL параметру
-
 document.addEventListener('DOMContentLoaded', function() {
-
     const urlParams = new URLSearchParams(window.location.search);
-
     if (urlParams.get('promo') === 'open') {
-
         openPromoModal();
-
-        // Отслеживание в Яндекс.Метрике
-
         if (typeof ym !== 'undefined') {
-
             ym(104857779, 'reachGoal', 'promo_direct_link');
-
         }
-
     }
-
 });
-
 </script>
-
+{% endblock %}
 {% endblock %}
 
-{% endblock %}

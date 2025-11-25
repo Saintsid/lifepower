@@ -130,3 +130,32 @@ nav a {
 .page-title {
     text-align: center;
 }
+
+/* Исправление карточек услуг на главной странице */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.service-card {
+    display: grid !important;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    min-height: 250px;
+}
+
+.service-card h3 {
+    min-height: 4rem;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.service-card p {
+    align-self: start;
+}
